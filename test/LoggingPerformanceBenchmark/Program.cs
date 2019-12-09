@@ -33,14 +33,14 @@ namespace LoggingPerformanceBenchmark
                 new LoggerRunner("Eventing - One Filt.", eventSourceFactory, "Events.Warning1", "Events.None2"),
                 new LoggerRunner("Eventing - Two Filt.", eventSourceFactory, "Events.Warning1", "Events.Warning2"),
                 new LoggerRunner("Eventing - One Full", eventSourceFactory, "Events.Trace1", "Events.Warning2"),
+                new LoggerMessageRunner("Eventing - None", eventSourceFactory, "Events.None1", "Events.None2"),
+                new LoggerMessageRunner("Eventing - One Filt.", eventSourceFactory, "Events.Warning1", "Events.None2"),
+                new LoggerMessageRunner("Eventing - Two Filt.", eventSourceFactory, "Events.Warning1", "Events.Warning2"),
+                new LoggerMessageRunner("Eventing - One Full", eventSourceFactory, "Events.Trace1", "Events.Warning2"),
                 new GuardedLoggerRunner("Eventing - None", eventSourceFactory, "Events.None1", "Events.None2"),
                 new GuardedLoggerRunner("Eventing - One Filt.", eventSourceFactory, "Events.Warning1", "Events.None2"),
                 new GuardedLoggerRunner("Eventing - Two Filt.", eventSourceFactory, "Events.Warning1", "Events.Warning2"),
                 new GuardedLoggerRunner("Eventing - One Full", eventSourceFactory, "Events.Trace1", "Events.Warning2"),
-                new MisusedLoggerMessageRunner("Eventing - None", eventSourceFactory, "Events.None1", "Events.None2"),
-                new MisusedLoggerMessageRunner("Eventing - One Filt.", eventSourceFactory, "Events.Warning1", "Events.None2"),
-                new MisusedLoggerMessageRunner("Eventing - Two Filt.", eventSourceFactory, "Events.Warning1", "Events.Warning2"),
-                new MisusedLoggerMessageRunner("Eventing - One Full", eventSourceFactory, "Events.Trace1", "Events.Warning2"),
             };
 
             Console.WriteLine("Logging performance tester.");
@@ -75,15 +75,18 @@ namespace LoggingPerformanceBenchmark
             nullRunner.Run();
 
             Console.WriteLine("");
-            Console.WriteLine("Delta from null runner:");
-
             foreach (var runner in runners)
             {
-                runner.BaseTime = nullRunner.Elapsed;
+                runner.BaseTime = TimeSpan.Zero; // nullRunner.Elapsed;
                 runner.Output = true;
                 runner.Iterations = iterations;
                 runner.Run();
             }
+
+            Console.WriteLine("");
+            nullRunner.Output = true;
+            nullRunner.Iterations = iterations;
+            nullRunner.Run();
 
             Console.WriteLine();
             Console.WriteLine("Done");

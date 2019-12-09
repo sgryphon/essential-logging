@@ -24,36 +24,76 @@ namespace LoggingPerformanceBenchmark
                 return "GuardedLogger:" + _description;
             }
         }
-        
-        protected override void LogCritical1(int id, string message, params object[] data)
+
+        protected override void LogCritical9101(int id, string message)
         {
             if (_logger1.IsEnabled(LogLevel.Critical))
             {
-                _logger1.LogCritical(id, message, data);
+                _logger1.LogCritical(id, message);
             }
         }
 
-        protected override void LogDebug1(int id, string message, params object[] data)
+        protected override void LogCritical9102(int id, string message)
         {
-            if (_logger1.IsEnabled(LogLevel.Debug))
+            if (_logger1.IsEnabled(LogLevel.Critical))
             {
-                _logger1.LogDebug(id, message, data);
+                _logger1.LogCritical(id, message);
             }
         }
 
-        protected override void LogDebug2(int id, string message, params object[] data)
-        {
-            if (_logger2.IsEnabled(LogLevel.Debug))
-            {
-                _logger2.LogDebug(id, message, data);
-            }
-        }
-
-        protected override void LogWarning2(int id, string message, params object[] data)
+        protected override void LogWarning4201(int id, string message, int counter2)
         {
             if (_logger2.IsEnabled(LogLevel.Warning))
             {
-                _logger2.LogWarning(id, message, data);
+                _logger2.LogWarning(id, message, counter2);
+            }
+        }
+
+        protected override void LogWarning4202(int id, string message, int counter2)
+        {
+            if (_logger2.IsEnabled(LogLevel.Warning))
+            {
+                _logger2.LogWarning(id, message, counter2);
+            }
+        }
+
+        protected override void LogWarning4203(int id, string message, int counter2)
+        {
+            if (_logger2.IsEnabled(LogLevel.Warning))
+            {
+                _logger2.LogWarning(id, message, counter2);
+            }
+        }
+
+        protected override void LogDebug31001(int id, string message, int data1, string data2)
+        {
+            if (_logger1.IsEnabled(LogLevel.Debug))
+            {
+                _logger1.LogDebug(id, message, data1, data2);
+            }
+        }
+
+        protected override void LogDebug31002(int id, string message, int data1)
+        {
+            if (_logger1.IsEnabled(LogLevel.Debug))
+            {
+                _logger1.LogDebug(id, message, data1);
+            }
+        }
+
+        protected override void LogDebug32003(int id, string message, int data1, string data2)
+        {
+            if (_logger2.IsEnabled(LogLevel.Debug))
+            {
+                _logger2.LogDebug(id, message, data1, data2);
+            }
+        }
+
+        protected override void LogDebug32004(int id, string message, int data1)
+        {
+            if (_logger2.IsEnabled(LogLevel.Debug))
+            {
+                _logger2.LogDebug(id, message, data1);
             }
         }
     }

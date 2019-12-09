@@ -1,48 +1,77 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LoggingPerformanceBenchmark
 {
     public class CountingRunner : RunnerBase
     {
-        int critical1 = 0;
-        int debug1 = 0;
-        int debug2 = 0;
-        int warning2 = 0;
-
-        protected override void LogCritical1(int id, string message, params object[] data)
+        private Dictionary<int, int> _eventCount;
+        
+        protected override void LogCritical9101(int id, string message)
         {
-            critical1++;
+            CountEvent(id);
         }
 
-        protected override void LogDebug1(int id, string message, params object[] data)
+        private void CountEvent(int id)
         {
-            debug1++;
+            _eventCount.TryGetValue(id, out var count);
+            _eventCount[id] = count + 1;
         }
 
-        protected override void LogDebug2(int id, string message, params object[] data)
+        protected override void LogCritical9102(int id, string message)
         {
-            debug2++;
+            CountEvent(id);
         }
 
-        protected override void LogWarning2(int id, string message, params object[] data)
+        protected override void LogWarning4201(int id, string message, int counter2)
         {
-            warning2++;
+            CountEvent(id);
+        }
+
+        protected override void LogWarning4202(int id, string message, int counter2)
+        {
+            CountEvent(id);
+        }
+
+        protected override void LogWarning4203(int id, string message, int counter2)
+        {
+            CountEvent(id);
+        }
+
+        protected override void LogDebug31001(int id, string message, int data1, string data2)
+        {
+            CountEvent(id);
+        }
+
+        protected override void LogDebug31002(int id, string message, int data1)
+        {
+            CountEvent(id);
+        }
+
+        protected override void LogDebug32003(int id, string message, int data1, string data2)
+        {
+            CountEvent(id);
+        }
+
+        protected override void LogDebug32004(int id, string message, int data1)
+        {
+            CountEvent(id);
         }
 
         protected override void Start()
         {
-            critical1 = 0;
-            debug1 = 0;
-            debug2 = 0;
-            warning2 = 0;
+            _eventCount = new Dictionary<int, int>();
         }
 
         protected override void Finish()
         {
             if (Output)
             {
-                Console.WriteLine("Trace1 received {0} verbose and {1} critical.", debug1, critical1);
-                Console.WriteLine("Trace2 received {0} verbose and {1} warning.", debug2, warning2);
+                foreach (var kvp in _eventCount.OrderBy(x => x.Key))
+                {
+                    Console.WriteLine("Event {0} occurred {1:n0} times.", kvp.Key, kvp.Value);
+                }
             }
         }
     }
