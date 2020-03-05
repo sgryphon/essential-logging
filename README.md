@@ -2,6 +2,51 @@
 
 Guidance, links, and additional log destinations for .NET Microsoft.Extensions.Logging
 
+## Getting started
+
+The simplest possible example, using the ubiquitous "Hello World".
+
+Create a new project:
+
+```powershell
+dotnet new console --output HelloWorld
+```
+
+Add a reference to the Microsoft console logging package:
+
+```powershell
+dotnet add HelloWorld package Microsoft.Extensions.Logging.Console 
+```
+
+Change the ```using``` at the top of Program.cs, and replace Main function with the following:
+
+**Program.cs**
+```c#
+using Microsoft.Extensions.Logging;
+
+namespace HelloWorld
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ILogger<Program> logger = LoggerFactory
+                .Create(logging => logging.AddConsole())
+                .CreateLogger<Program>();
+            logger.LogInformation("Hello World!");
+            Console.ReadLine();
+        }
+    }
+}
+```
+
+Run the console application:
+
+```powershell
+dotnet run --project HelloWorld
+```
+
+
 ## Using the loggers
 
 Use Nuget:
