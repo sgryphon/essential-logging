@@ -1,4 +1,6 @@
-# Essential Logging
+![Essential Logging](docs/images/Essential-Diagnostics-64.png)
+
+# Essential .NET Logging
 
 Guidance, links, and additional log destinations for .NET Microsoft.Extensions.Logging
 
@@ -46,6 +48,9 @@ Run the console application:
 dotnet run --project GettingStarted
 ```
 
+A simple "Hello World" isn’t however very useful for showing the different capabilities of logging, so the next page will walk you through a [logging primer](docs/Logging-Primer.md) to introduce the range of features available in [Microsoft.Extensions.Logging](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging).
+
+**Next: [Logging Primer](docs/Logging-Primer.md)**
 
 ## Using the loggers
 
