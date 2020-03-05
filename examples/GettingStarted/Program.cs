@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 
-namespace HelloWorld
+namespace GettingStarted
 {
     class Program
     {

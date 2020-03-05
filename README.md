@@ -9,13 +9,13 @@ The simplest possible example, using the ubiquitous "Hello World".
 Create a new project:
 
 ```powershell
-dotnet new console --output HelloWorld
+dotnet new console --output GettingStarted
 ```
 
 Add a reference to the Microsoft console logging package:
 
 ```powershell
-dotnet add HelloWorld package Microsoft.Extensions.Logging.Console 
+dotnet add GettingStarted package Microsoft.Extensions.Logging.Console 
 ```
 
 Change the ```using``` at the top of Program.cs, and replace Main function with the following:
@@ -24,7 +24,7 @@ Change the ```using``` at the top of Program.cs, and replace Main function with 
 ```c#
 using Microsoft.Extensions.Logging;
 
-namespace HelloWorld
+namespace GettingStarted
 {
     class Program
     {
@@ -43,7 +43,7 @@ namespace HelloWorld
 Run the console application:
 
 ```powershell
-dotnet run --project HelloWorld
+dotnet run --project GettingStarted
 ```
 
 
