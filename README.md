@@ -20,7 +20,7 @@ Add a reference to the Microsoft console logging package:
 dotnet add GettingStarted package Microsoft.Extensions.Logging.Console 
 ```
 
-Change the ```using``` at the top of Program.cs, and replace Main function with the following:
+Change the `using` at the top of `Program.cs`, and replace the `Main()` function with the following:
 
 **Program.cs**
 ```c#
@@ -64,7 +64,7 @@ See the Microsoft documentation and scroll down to see the built in system categ
 
 https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/
 
-### Other d
+### Other providers
 
 * Rolling log file, by Andrew Lock
 

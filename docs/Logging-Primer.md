@@ -9,7 +9,7 @@ Once the program has had logging statements added, any of the logging providers 
 
 # Hello World (no logging)
 
-This version of “Hello World” involves a bunch of Worker classes that Poke() each other to say “Hello World”. Sometimes they get sick of being poked.
+This version of “Hello World” involves a bunch of Worker classes that `PokeAsync()` each other to say “Hello World”. Sometimes they get sick of being poked.
 
 Create a solution to hold our project:
 
@@ -30,7 +30,7 @@ Add a reference to the Microsoft hosting package:
 dotnet add HelloWorld package Microsoft.Extensions.Hosting
 ```
 
-Best practice is to enable the new nullable reference types language feature in HelloWorld.csproj:
+Best practice is to enable the new nullable reference types language feature in `HelloWorld.csproj`:
 
 ```xml
   <PropertyGroup>
