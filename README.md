@@ -69,6 +69,21 @@ dotnet pack src/Essential.Logging.RollingFile --output pack
 
 Versioning is done with GitVersion, so you can determine the build / package number based on the git branch.
 
+### Updating and running examples
+
+While development you may test multiple builds of the same version, so you need to clear out the
+NuGet cache (delete from the .nuget/packages folder), force restore, and then run:
+
+```powershell
+Get-ChildItem (Join-Path $ENV:HOME '.nuget/packages/essential.logging.*') | Remove-Item -Recurse -Force
+dotnet restore examples/HelloRollingFile --force --no-cache
+dotnet run --project examples/HelloRollingFile
+```
+
+???
+
+dotnet clean examples/HelloRollingFile
+
 
 ## Using the loggers
 

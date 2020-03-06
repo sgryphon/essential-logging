@@ -59,6 +59,6 @@ namespace Essential.Logging.RollingFile
         /// UTC time; you can override to LocalDateTime if you want).
         /// </para>
         /// </remarks>
-        public string FilePathTemplate { get; set; } = "{ApplicationName}-{DateTime:yyyy-MM-dd}.log";
+        public string FilePathTemplate { get; set; } = "{BaseDirectory}/{ApplicationName}-{DateTime:yyyy-MM-dd}.log";
     }
 }

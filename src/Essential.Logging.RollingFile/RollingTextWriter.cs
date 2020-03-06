@@ -164,6 +164,9 @@ namespace Essential.Logging
                 {
                     switch (name.ToUpperInvariant())
                     {
+                        case "BASEDIRECTORY":
+                            value = AppDomain.CurrentDomain.BaseDirectory;
+                            break;
                         case "ACTIVITYID":
                             value = Trace.CorrelationManager.ActivityId;
                             break;
