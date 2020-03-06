@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.AzureAppServices;
+using Microsoft.Extensions.Logging.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace HelloLogging
 {
@@ -19,6 +22,17 @@ namespace HelloLogging
                 .ConfigureAppConfiguration((hostContext, configurationBuilder) =>
                 {
                     configurationBuilder.SetBasePath(AppDomain.CurrentDomain.BaseDirectory);
+                })
+                .ConfigureLogging((hostContext, loggingBuilder) =>
+                {
+                    var services = loggingBuilder.Services;
+                    if (hostContext.Configuration.GetSection("Logging:AzureAppServicesFile").Exists())
+                    {
+                        services.Configure<AzureFileLoggerOptions>(x =>
+                            hostContext.Configuration.Bind("Logging:AzureAppServicesFile", x));
+                        services.AddSingleton<ILoggerProvider, FileLoggerProvider>();
+                        LoggerProviderOptions.RegisterProviderOptions<AzureFileLoggerOptions, FileLoggerProvider>(services);
+                    }
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
