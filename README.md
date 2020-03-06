@@ -52,6 +52,24 @@ A simple "Hello World" isn’t however very useful for showing the different cap
 
 **Next: [Logging Primer](docs/Logging-Primer.md)**
 
+
+## Building the loggers
+
+For updating references across projects, you need to build depedent packages first:
+
+```powershell
+dotnet pack src/Essential.Logging.Core --output pack
+```
+
+This will output to the `pack` folder in the project, so they can be referenced by other projects, e.g. examples.
+
+```powershell
+dotnet pack src/Essential.Logging.RollingFile --output pack
+```
+
+Versioning is done with GitVersion, so you can determine the build / package number based on the git branch.
+
+
 ## Using the loggers
 
 Use Nuget:
