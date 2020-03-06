@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Essential.Logging.RollingFile;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
 
-namespace HelloLogging
+namespace HelloRollingFile
 {
     public class Program
     {
@@ -20,7 +22,17 @@ namespace HelloLogging
                 {
                     configurationBuilder.SetBasePath(AppDomain.CurrentDomain.BaseDirectory);
                 })
-                .ConfigureServices((hostContext, services) =>
+                .ConfigureLogging((hostContext, loggingBuilder) =>
+                {
+                    var services = loggingBuilder.Services;
+                    if (hostContext.Configuration.GetSection("Logging:RollingFile").Exists())
+                    {
+                        services.Configure<RollingFileLoggerOptions>(x =>
+                            hostContext.Configuration.Bind("Logging:RollingFile", x));
+                        services.AddSingleton<ILoggerProvider, RollingFileLoggerProvider>();
+                        LoggerProviderOptions.RegisterProviderOptions<RollingFileLoggerOptions, RollingFileLoggerProvider>(services);
+                    }
+                })                .ConfigureServices((hostContext, services) =>
                 {
                     services.AddSingleton<WorkerRegistry>();
                     int numberOfWorkers = Random.Next(2, 4);
