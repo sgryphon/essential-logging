@@ -21,7 +21,7 @@ Create the new project and add to the solution:
 
 ```powershell
 dotnet new console --output HelloWorld
-dotnet sln add HelloWorld
+dotnet sln Essential.Logging.Examples.sln add HelloWorld
 ```
 
 Add a reference to the Microsoft hosting package:

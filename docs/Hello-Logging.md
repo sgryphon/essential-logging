@@ -8,7 +8,7 @@ Create the new project, add to the solution, and add a reference to the Microsof
 
 ```powershell
 dotnet new console --output HelloLogging
-dotnet sln add HelloLogging
+dotnet sln Essential.Logging.Examples.sln add HelloLogging
 dotnet add HelloLogging package Microsoft.Extensions.Hosting
 ```
 
@@ -151,7 +151,15 @@ Now, run and you will see lots of debug level output; you might want to change t
 dotnet run --project HelloLogging
 ```
 
-You will see that the logging will include not only your own values, but 
+You will see that the logging will include not only your own values, but log messages from the Microsoft host infrastructure, such as the console host set up. You can change different settings to see the effect, such as turning colors off, or changing to a more compact `systemd` format:
+
+```json
+    "Console": {
+      "TimestampFormat": "HH:mm:sszz ",
+      "IncludeScopes": true,
+      "Format": "systemd"
+    },
+```
 
 With the basic console logger the information is limited, but the default settings already include the basics of what you need.
 
