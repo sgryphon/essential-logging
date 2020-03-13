@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essential.Logging.Core", "Essential.Logging.Core\Essential.Logging.Core.csproj", "{3DD9E02D-3F34-4C2C-BC80-FAF41D9E66B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essential.StringTemplate", "src\Essential.StringTemplate\Essential.StringTemplate.csproj", "{3DD9E02D-3F34-4C2C-BC80-FAF41D9E66B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essential.Logging.ColoredConsole", "Essential.Logging.ColoredConsole\Essential.Logging.ColoredConsole.csproj", "{5642B347-A257-4D29-A01E-022DA962777A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essential.Logging.ColoredConsole", "src\Essential.Logging.ColoredConsole\Essential.Logging.ColoredConsole.csproj", "{5642B347-A257-4D29-A01E-022DA962777A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essential.Logging.RollingFile", "Essential.Logging.RollingFile\Essential.Logging.RollingFile.csproj", "{D2AE7768-DF93-4956-8A13-23820548E5AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essential.Logging.RollingFile", "src\Essential.Logging.RollingFile\Essential.Logging.RollingFile.csproj", "{D2AE7768-DF93-4956-8A13-23820548E5AB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{4B4766CE-46AC-4B87-A719-8D010E6FC195}"
 ProjectSection(SolutionItems) = preProject
-	..\README.md = ..\README.md
+	README.md = README.md
 EndProjectSection
 EndProject
 Global

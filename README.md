@@ -1,4 +1,4 @@
-![Essential Logging](docs/images/Essential-Diagnostics-64.png)
+![Essential Logging](docs/images/diagnostics-logo-64.png)
 
 # Essential .NET Logging
 

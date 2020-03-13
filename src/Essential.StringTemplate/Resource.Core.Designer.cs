@@ -29,7 +29,7 @@ namespace Essential.Logging.Core {
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Essential.Logging.Core.Resource_Core", typeof(Resource_Core).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Essential.StringTemplate.Resource_Core", typeof(Resource_Core).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

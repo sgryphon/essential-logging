@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 
-namespace Essential.Logging
+namespace Essential
 {
     /// <summary>
     /// Formats trace output using a template.

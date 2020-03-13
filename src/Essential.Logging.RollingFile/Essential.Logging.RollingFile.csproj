@@ -30,9 +30,14 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="GitVersionTask" Version="5.1.3" />
-    <PackageReference Include="Essential.Logging.Core" Version="0.1.18" />
+    <PackageReference Include="GitVersionTask" Version="5.1.3">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.2" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Essential.StringTemplate\Essential.StringTemplate.csproj" />
   </ItemGroup>
 
 </Project>
