@@ -22,12 +22,13 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/sgryphon/essential-logging</PackageProjectUrl>
-    <PackageIcon>Essential-Diagnostics-64.png</PackageIcon>
+    <PackageIcon>diagnostics-logo-64.png</PackageIcon>
     <PackageTags>Logging;Tracing;Diagnostics;Log;Trace</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\docs\images\diagnostics-logo-64.png" Pack="true" PackagePath="\" />
+    <None Include="..\..\docs\images\diagnostics-logo-64.png" Pack="true" PackagePath="\">
+    </None>
   </ItemGroup>
 
   <ItemGroup>
