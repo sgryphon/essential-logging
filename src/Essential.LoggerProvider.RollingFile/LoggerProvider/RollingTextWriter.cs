@@ -4,12 +4,12 @@ using System.IO;
 using Essential.IO;
 using Essential.Logging.RollingFile;
 
-namespace Essential.Logging
+namespace Essential.LoggerProvider
 {
     internal class RollingTextWriter : IDisposable
     {
-        private string _currentPath;
-        private TextWriter _currentWriter;
+        private string? _currentPath;
+        private TextWriter? _currentWriter;
         private readonly object _fileLock = new object();
         private IFileSystem _fileSystem = new FileSystem();
         private const int _maxStreamRetries = 5;
@@ -70,7 +70,7 @@ namespace Essential.Logging
         //     return new RollingTextWriter(filePathTemplate);
         // }
 
-        internal RollingFileLoggerOptions Options { get; set; }
+        internal RollingFileLoggerOptions Options { get; set; } = default!;
 
         public void Dispose()
         {
@@ -116,7 +116,7 @@ namespace Essential.Logging
             lock (_fileLock)
             {
                 EnsureCurrentWriter(filePath);
-                _currentWriter.WriteLine(value);
+                _currentWriter!.WriteLine(value);
             }
         }
 
@@ -166,7 +166,7 @@ namespace Essential.Logging
         private string GetCurrentFilePath()
         {
             var result = StringTemplate.Format(CultureInfo.CurrentCulture, FilePathTemplate,
-                delegate(string name, out object value)
+                delegate(string name, out object? value)
                 {
                     if (!_systemValueProvider.TryGetArgumentValue(name, out value))
                     {

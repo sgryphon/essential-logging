@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Essential.Logging.RollingFile
+namespace Essential.LoggerProvider
 {
     public class RollingFileLoggerProvider : ILoggerProvider, ISupportExternalScope
     {
@@ -12,7 +12,7 @@ namespace Essential.Logging.RollingFile
 
         private readonly IDisposable _optionsReloadToken;
         private readonly RollingFileLoggerProcessor _processor;
-        private IExternalScopeProvider _scopeProvider;
+        private IExternalScopeProvider _scopeProvider = default!;
 
         public RollingFileLoggerProvider(IOptionsMonitor<RollingFileLoggerOptions> options)
         {
@@ -29,7 +29,8 @@ namespace Essential.Logging.RollingFile
                 loggerName =>
                     new RollingFileLogger(name, _processor)
                     {
-                        Options = _options.CurrentValue, ScopeProvider = _scopeProvider
+                        Options = _options.CurrentValue, 
+                        ScopeProvider = _scopeProvider
                     });
         }
 

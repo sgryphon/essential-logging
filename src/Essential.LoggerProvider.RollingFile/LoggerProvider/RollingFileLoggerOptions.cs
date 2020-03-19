@@ -1,4 +1,4 @@
-namespace Essential.Logging.RollingFile
+namespace Essential.LoggerProvider
 {
     public class RollingFileLoggerOptions
     {

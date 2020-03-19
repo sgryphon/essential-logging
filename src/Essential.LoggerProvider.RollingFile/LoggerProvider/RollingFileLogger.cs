@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
-namespace Essential.Logging.RollingFile
+namespace Essential.LoggerProvider
 {
     public class RollingFileLogger : ILogger
     {
         private readonly string _categoryName;
         private readonly RollingFileLoggerProcessor _loggerProcessor;
-        private LogTemplate _logTemplate;
-        private RollingFileLoggerOptions _options;
+        private LogTemplate _logTemplate = default!;
+        private RollingFileLoggerOptions _options = default!;
 
         internal RollingFileLogger(string categoryName, RollingFileLoggerProcessor loggerProcessor)
         {
@@ -27,11 +27,11 @@ namespace Essential.Logging.RollingFile
             }
         }
 
-        internal IExternalScopeProvider ScopeProvider { get; set; }
+        internal IExternalScopeProvider ScopeProvider { get; set; } = default!;
 
         public IDisposable BeginScope<TState>(TState state)
         {
-            return ScopeProvider?.Push(state);
+            return ScopeProvider.Push(state);
         }
 
         public bool IsEnabled(LogLevel logLevel)
@@ -56,7 +56,7 @@ namespace Essential.Logging.RollingFile
             var message = formatter(state, exception);
 
             var scopeProvider = ScopeProvider;
-            object[] scopes = null;
+            object[]? scopes = null;
             if (Options.IncludeScopes && scopeProvider != null)
             {
                 var scopeList = new List<object>();

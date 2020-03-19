@@ -2,7 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace Essential.Logging.RollingFile
+namespace Essential.LoggerProvider
 {
     internal class RollingFileLoggerProcessor : IDisposable
     {

@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Essential.Logging.RollingFile" Version="0.1.16" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.2" />
   </ItemGroup>
 
@@ -14,6 +13,10 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Essential.LoggerProvider.RollingFile\Essential.LoggerProvider.RollingFile.csproj" />
   </ItemGroup>
 
 </Project>

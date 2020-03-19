@@ -108,7 +108,7 @@ namespace Essential
                         value = FormatScopes(scopes);
                         break;
                     case "SCOPELIST":
-                        value = FormatScopes(scopes, ",");
+                        value = FormatScopes(scopes, " => ", " => ");
                         break;
                     default:
                         if (!_systemValueProvider.TryGetArgumentValue(name, out value))
@@ -158,17 +158,20 @@ namespace Essential
             }
         }
 
-        private object FormatScopes(object[]? scopes, string? listSeparator = null)
+        private string FormatScopes(object[]? scopes, string? prefix = null, string? separator = null)
         {
-            object value;
-            StringBuilder builder = new StringBuilder();
-            if (scopes != null)
+            if (scopes != null && scopes.Length > 0)
             {
+                StringBuilder builder = new StringBuilder();
+                if (prefix != null)
+                {
+                    builder.Append(prefix);
+                }
                 for (int i = 0; i < scopes.Length; i++)
                 {
-                    if (i > 0 && listSeparator != null)
+                    if (i > 0 && separator != null)
                     {
-                        builder.Append(listSeparator);
+                        builder.Append(separator);
                     }
 
                     if (scopes[i] != null)
@@ -176,10 +179,11 @@ namespace Essential
                         builder.Append(scopes[i]);
                     }
                 }
+
+                return builder.ToString();
             }
 
-            value = builder.ToString();
-            return value;
+            return null;
         }
 
         private int GetSeverity(LogLevel logLevel)
