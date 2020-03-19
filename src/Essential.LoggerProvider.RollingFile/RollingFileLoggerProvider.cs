@@ -7,14 +7,13 @@ namespace Essential.Logging.RollingFile
 {
     public class RollingFileLoggerProvider : ILoggerProvider, ISupportExternalScope
     {
+        private readonly ConcurrentDictionary<string, RollingFileLogger> _loggers;
         private readonly IOptionsMonitor<RollingFileLoggerOptions> _options;
 
-        private readonly ConcurrentDictionary<string, RollingFileLogger> _loggers;
+        private readonly IDisposable _optionsReloadToken;
         private readonly RollingFileLoggerProcessor _processor;
-
-        private IDisposable _optionsReloadToken;
         private IExternalScopeProvider _scopeProvider;
-        
+
         public RollingFileLoggerProvider(IOptionsMonitor<RollingFileLoggerOptions> options)
         {
             _options = options;
@@ -22,21 +21,6 @@ namespace Essential.Logging.RollingFile
             _loggers = new ConcurrentDictionary<string, RollingFileLogger>();
             ReloadLoggerOptions(options.CurrentValue);
             _optionsReloadToken = _options.OnChange(ReloadLoggerOptions);
-        }
-
-        private void ReloadLoggerOptions(RollingFileLoggerOptions options)
-        {
-            _processor.Options = options;
-            foreach (var logger in _loggers)
-            {
-                logger.Value.Options = options;
-            }
-        }
-
-        public void Dispose()
-        {
-            _optionsReloadToken?.Dispose();
-            _processor.Dispose();
         }
 
         public ILogger CreateLogger(string name)
@@ -49,12 +33,27 @@ namespace Essential.Logging.RollingFile
                     });
         }
 
+        public void Dispose()
+        {
+            _optionsReloadToken?.Dispose();
+            _processor.Dispose();
+        }
+
         public void SetScopeProvider(IExternalScopeProvider scopeProvider)
         {
             _scopeProvider = scopeProvider;
             foreach (var logger in _loggers)
             {
                 logger.Value.ScopeProvider = scopeProvider;
+            }
+        }
+
+        private void ReloadLoggerOptions(RollingFileLoggerOptions options)
+        {
+            _processor.Options = options;
+            foreach (var logger in _loggers)
+            {
+                logger.Value.Options = options;
             }
         }
     }

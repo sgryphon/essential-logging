@@ -2,14 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Security.Principal;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using Microsoft.Extensions.Logging;
 
 namespace Essential
 {
@@ -37,25 +33,23 @@ namespace Essential
     /// </remarks>
     public class SystemValueProvider : ITemplateValueProvider
     {
-        string _applicationName;
-        //private IHttpTraceContext httpTraceContext = new HttpContextCurrentAdapter();
-        int _processId;
-        string _processName;
-        
-        public static Func<DateTimeOffset> LocalDateTimeProvider { get; set; } = () => DateTimeOffset.Now;
+        private string? _applicationName;
 
-        private static Dictionary<string, Func<object>> ValueProviders;
+        //private IHttpTraceContext httpTraceContext = new HttpContextCurrentAdapter();
+        private int _processId;
+        private string? _processName;
 
         private static readonly Environment.SpecialFolder[] _specialFolders = new[]
         {
-            Environment.SpecialFolder.CommonApplicationData,
-            Environment.SpecialFolder.ApplicationData,
+            Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolder.ApplicationData,
             Environment.SpecialFolder.LocalApplicationData
         };
 
+        private readonly Dictionary<string, Func<object?>> ValueProviders;
+
         public SystemValueProvider()
         {
-            ValueProviders = new Dictionary<string, Func<object>>(StringComparer.InvariantCultureIgnoreCase)
+            ValueProviders = new Dictionary<string, Func<object?>>(StringComparer.InvariantCultureIgnoreCase)
             {
                 ["DateTime"] = () => LocalDateTimeProvider().ToUniversalTime(),
                 ["UtcDateTime"] = () => LocalDateTimeProvider().ToUniversalTime(),
@@ -108,7 +102,9 @@ namespace Essential
             }
         }
 
-        public bool TryGetArgumentValue(string name, out object value)
+        public static Func<DateTimeOffset> LocalDateTimeProvider { get; set; } = () => DateTimeOffset.Now;
+
+        public bool TryGetArgumentValue(string name, out object? value)
         {
             if (ValueProviders.TryGetValue(name, out var provider))
             {
@@ -139,19 +135,7 @@ namespace Essential
         private string ApplicationName()
         {
             EnsureApplicationName();
-            return _applicationName;
-        }
-        
-        private int ProcessId()
-        {
-            EnsureProcessInfo();
-            return _processId;
-        }
-
-        private string ProcessName()
-        {
-            EnsureProcessInfo();
-            return _processName;
+            return _applicationName!;
         }
 
         private void EnsureApplicationName()
@@ -160,7 +144,7 @@ namespace Essential
             {
                 //applicationName = Path.GetFileNameWithoutExtension(Application.ExecutablePath);
                 var entryAssembly = Assembly.GetEntryAssembly();
-                
+
                 // if (entryAssembly == null)
                 // {
                 //     var moduleFileName = new StringBuilder(260);
@@ -189,7 +173,7 @@ namespace Essential
             }
         }
 
-        private string LogicalOperationStack()
+        private string? LogicalOperationStack()
         {
             Stack? stack = Trace.CorrelationManager.LogicalOperationStack;
 
@@ -201,12 +185,25 @@ namespace Essential
                     if (stackBuilder.Length > 0) stackBuilder.Append(", ");
                     stackBuilder.Append(o);
                 }
+
                 return stackBuilder.ToString();
             }
             else
             {
                 return null;
             }
+        }
+
+        private int ProcessId()
+        {
+            EnsureProcessInfo();
+            return _processId;
+        }
+
+        private string ProcessName()
+        {
+            EnsureProcessInfo();
+            return _processName!;
         }
 
         // internal static object FormatWindowsIdentityName()

@@ -10,7 +10,7 @@ namespace Essential.Tests.Utility
 {
     public class UserResetScope : IDisposable
     {
-        private IPrincipal originalUser;
+        private IPrincipal? originalUser;
 
         public UserResetScope(string newUserName)
         {
@@ -19,7 +19,7 @@ namespace Essential.Tests.Utility
             Thread.CurrentPrincipal = newUser;
         }
 
-        public IPrincipal OriginalUser { get { return this.originalUser; } }
+        public IPrincipal? OriginalUser { get { return this.originalUser; } }
 
         public void Dispose()
         {

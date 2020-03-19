@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Essential.StringTemplate\Essential.StringTemplate.csproj" />
+      <ProjectReference Include="..\..\src\Essential.LogTemplate\Essential.LogTemplate.csproj" />
     </ItemGroup>
 
 </Project>

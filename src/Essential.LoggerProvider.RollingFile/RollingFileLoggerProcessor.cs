@@ -1,20 +1,19 @@
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
-using Essential.Logging;
 
 namespace Essential.Logging.RollingFile
 {
     internal class RollingFileLoggerProcessor : IDisposable
     {
         private const int _maxQueuedMessages = 1024;
-        
+
         private readonly BlockingCollection<string> _messageQueue = new BlockingCollection<string>(_maxQueuedMessages);
 
         private readonly Thread _outputThread;
 
         private readonly RollingTextWriter _writer;
- 
+
         public RollingFileLoggerProcessor()
         {
             _writer = new RollingTextWriter();
@@ -31,6 +30,21 @@ namespace Essential.Logging.RollingFile
             set => _writer.Options = value;
         }
 
+        public void Dispose()
+        {
+            _messageQueue?.CompleteAdding();
+            try
+            {
+                _outputThread.Join(1500); // with timeout in case writer is locked
+            }
+            catch (ThreadStateException) { }
+
+            _messageQueue?.Dispose();
+
+            _writer?.Flush();
+            _writer?.Dispose();
+        }
+
         public void EnqueueMessage(string message)
         {
             if (!_messageQueue.IsAddingCompleted)
@@ -42,18 +56,13 @@ namespace Essential.Logging.RollingFile
                 }
                 catch (InvalidOperationException) { }
             }
-            
+
             // Adding is complete, so just log the message
             try
             {
                 WriteMessage(message);
             }
             catch (Exception) { }
-        }
-
-        private void WriteMessage(string message)
-        {
-            _writer.WriteLine(message);
         }
 
         private void ProcessLogQueue()
@@ -75,18 +84,9 @@ namespace Essential.Logging.RollingFile
             }
         }
 
-        public void Dispose()
+        private void WriteMessage(string message)
         {
-            _messageQueue?.CompleteAdding();
-            try
-            {
-                _outputThread.Join(1500); // with timeout in case writer is locked
-            }
-            catch (ThreadStateException) { }
-            _messageQueue?.Dispose();
-            
-            _writer?.Flush();
-            _writer?.Dispose();
+            _writer.WriteLine(message);
         }
     }
 }

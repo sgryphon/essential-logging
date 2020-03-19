@@ -42,7 +42,7 @@ namespace Essential.Tests
             string template = "{Id}.{PrincipalName}";
 
             var logTemplate = new LogTemplate(template);
-            string actual = null;
+            string actual;
             using (var scope = new UserResetScope("testuser"))
             {
                 actual = logTemplate.Bind(categoryName, logLevel, eventId, message, ex, scopes);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using Essential.IO;
@@ -9,16 +8,32 @@ namespace Essential.Logging
 {
     internal class RollingTextWriter : IDisposable
     {
-        const int _maxStreamRetries = 5;
-
         private string _currentPath;
         private TextWriter _currentWriter;
-        private object _fileLock = new object();
+        private readonly object _fileLock = new object();
         private IFileSystem _fileSystem = new FileSystem();
-        SystemValueProvider _systemValueProvider = new SystemValueProvider();
+        private const int _maxStreamRetries = 5;
+        private readonly SystemValueProvider _systemValueProvider = new SystemValueProvider();
 
         public RollingTextWriter()
         {
+        }
+
+        public string FilePathTemplate
+        {
+            get { return Options.FilePathTemplate; }
+        }
+
+        public IFileSystem FileSystem
+        {
+            get { return _fileSystem; }
+            set
+            {
+                lock (_fileLock)
+                {
+                    _fileSystem = value;
+                }
+            }
         }
 
         // /// <summary>
@@ -57,19 +72,19 @@ namespace Essential.Logging
 
         internal RollingFileLoggerOptions Options { get; set; }
 
-        public string FilePathTemplate
+        public void Dispose()
         {
-            get { return Options.FilePathTemplate; }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public IFileSystem FileSystem
+        protected virtual void Dispose(bool disposing)
         {
-            get { return _fileSystem; }
-            set
+            if (disposing)
             {
-                lock (_fileLock)
+                if (_currentWriter != null)
                 {
-                    _fileSystem = value;
+                    _currentWriter.Dispose();
                 }
             }
         }
@@ -139,8 +154,8 @@ namespace Essential.Logging
                     }
                     catch (IOException)
                     {
-
                     }
+
                     num++;
                 }
 
@@ -148,41 +163,25 @@ namespace Essential.Logging
             }
         }
 
-        static string getFullPath(string path, int num)
-        {
-            var extension = Path.GetExtension(path);
-            return path.Insert(path.Length - extension.Length, "-" + num.ToString(CultureInfo.InvariantCulture));
-        }
-
         private string GetCurrentFilePath()
         {
-            var result = StringTemplate.Format(CultureInfo.CurrentCulture, FilePathTemplate, 
+            var result = StringTemplate.Format(CultureInfo.CurrentCulture, FilePathTemplate,
                 delegate(string name, out object value)
                 {
                     if (!_systemValueProvider.TryGetArgumentValue(name, out value))
                     {
                         value = "{" + name + "}";
                     }
+
                     return true;
                 });
             return result;
         }
 
-        public void Dispose()
+        private static string getFullPath(string path, int num)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_currentWriter != null)
-                {
-                    _currentWriter.Dispose();
-                }
-            }
+            var extension = Path.GetExtension(path);
+            return path.Insert(path.Length - extension.Length, "-" + num.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

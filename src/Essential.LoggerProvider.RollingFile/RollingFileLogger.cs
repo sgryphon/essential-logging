@@ -16,8 +16,6 @@ namespace Essential.Logging.RollingFile
             _categoryName = categoryName;
             _loggerProcessor = loggerProcessor;
         }
-        
-        internal IExternalScopeProvider ScopeProvider { get; set; }
 
         internal RollingFileLoggerOptions Options
         {
@@ -29,8 +27,21 @@ namespace Essential.Logging.RollingFile
             }
         }
 
-        
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        internal IExternalScopeProvider ScopeProvider { get; set; }
+
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            return ScopeProvider?.Push(state);
+        }
+
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            return Options.IsEnabled;
+        }
+
+
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+            Func<TState, Exception, string> formatter)
         {
             if (!IsEnabled(logLevel))
             {
@@ -55,7 +66,7 @@ namespace Essential.Logging.RollingFile
                 }, scopeList);
                 scopes = scopeList.ToArray();
             }
-            
+
             var output = _logTemplate.Bind(
                 _categoryName,
                 logLevel,
@@ -64,18 +75,8 @@ namespace Essential.Logging.RollingFile
                 exception,
                 scopes
             );
-            
+
             _loggerProcessor.EnqueueMessage(output);
-        }
-
-        public bool IsEnabled(LogLevel logLevel)
-        {
-            return Options.IsEnabled;
-        }
-
-        public IDisposable BeginScope<TState>(TState state)
-        {
-            return ScopeProvider?.Push(state);
         }
     }
 }

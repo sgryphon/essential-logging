@@ -8,7 +8,7 @@ namespace Essential.Tests
     [TestClass]
     public class StringTemplateTest
     {
-        public TestContext TestContext { get; set; }
+        public TestContext? TestContext { get; set; }
 
         [TestMethod]
         public void FormatAtStart()
@@ -93,9 +93,9 @@ namespace Essential.Tests
             var template = "{a}";
 
             int count = 0;
-            string lastName = null;
+            string lastName = default!;
             var actual = StringTemplate.Format(template,
-                                               delegate(string name, out object value)
+                                               delegate(string name, out object? value)
                                                {
                                                    count++;
                                                    lastName = name;
@@ -138,7 +138,7 @@ namespace Essential.Tests
         {
             var arguments = new Dictionary<string, object>();
 
-            var actual = StringTemplate.Format(null, arguments);
+            var actual = StringTemplate.Format(null!, arguments);
 
             Assert.Fail("Should have thrown exception.");
         }
@@ -149,7 +149,7 @@ namespace Essential.Tests
         {
             var template = "x";
 
-            var actual = StringTemplate.Format(template, (IDictionary<string, object>)null);
+            var actual = StringTemplate.Format(template, (IDictionary<string, object>)null!);
 
             Assert.Fail("Should have thrown exception.");
         }
@@ -160,7 +160,7 @@ namespace Essential.Tests
         {
             var template = "x";
 
-            var actual = StringTemplate.Format(template, (TryGetArgumentValue)null);
+            var actual = StringTemplate.Format(template, (TryGetArgumentValue)null!);
 
             Assert.Fail("Should have thrown exception.");
         }

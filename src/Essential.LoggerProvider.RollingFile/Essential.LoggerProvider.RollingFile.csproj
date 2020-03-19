@@ -6,27 +6,28 @@
     <Authors>sgryphon</Authors>
     <Copyright>Copyright © 2020 Gryphon Technology Pty Ltd</Copyright>
     <Version>0.0.1</Version>
+    <RootNamespace>Essential.LoggerProvider</RootNamespace>
     <LangVersion>latest</LangVersion>
-    <!--    <Nullable>enable</Nullable>-->
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>
     <Description>
-      Rolling file log provider for Microsoft.Extensions.Logging. Writes to a text file, rolling to a new file based on a filename template (usually including the date).
+      Rolling file logger provider for Microsoft.Extensions.Logging. Writes to a text file, rolling to a new file based on a filename template (usually including the date).
 
-      Other Essential.Logging packages extend the .NET Microsoft.Extensions.Logging with additional log providers, including a rolling file.
+      Other Essential.Logging packages extend the .NET Microsoft.Extensions.Logging with additional logger providers, including a rolling file.
 
       See the project site on GitHub for examples and documentation.
     </Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/sgryphon/essential-logging</PackageProjectUrl>
-    <PackageIcon>Essential-Diagnostics-64.png</PackageIcon>
-    <PackageTags>Logging;Tracing;Diagnostics;Log;Trace</PackageTags>
+    <PackageIcon>diagnostics-logo-64.png</PackageIcon>
+    <PackageTags>Logging;LoggerProvider;Tracing;Diagnostics;Log;Trace</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\docs\images\Essential-Diagnostics-64.png" Pack="true" PackagePath="\" />
+    <None Include="..\..\docs\images\diagnostics-logo-64.png" Pack="true" PackagePath="\" />
   </ItemGroup>
   
   <ItemGroup>
@@ -38,7 +39,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Essential.StringTemplate\Essential.StringTemplate.csproj" />
+    <ProjectReference Include="..\Essential.LogTemplate\Essential.LogTemplate.csproj" />
   </ItemGroup>
 
 </Project>

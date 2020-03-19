@@ -135,12 +135,13 @@ namespace Essential
         /// are case-insensitive.
         /// </para>
         /// </remarks>
-        public static string Format(IFormatProvider provider, string template, IDictionary<string, object> arguments)
+        public static string Format(IFormatProvider? provider, string template, IDictionary<string, object> arguments)
         {
             if (arguments == null)
             {
                 throw new ArgumentNullException("arguments");
             }
+
             return Format(provider, template, arguments.TryGetValue);
         }
 
@@ -171,12 +172,13 @@ namespace Essential
         /// are case-insensitive.
         /// </para>
         /// </remarks>
-        public static string Format(IFormatProvider provider, string template, TryGetArgumentValue tryGetArgumentValue)
+        public static string Format(IFormatProvider? provider, string template, TryGetArgumentValue tryGetArgumentValue)
         {
             if (template == null)
             {
                 throw new ArgumentNullException("template");
             }
+
             if (tryGetArgumentValue == null)
             {
                 throw new ArgumentNullException("tryGetArgumentValue");
@@ -187,7 +189,7 @@ namespace Essential
             int length = chArray.Length;
             char ch = '\0';
 
-            ICustomFormatter formatter = null;
+            ICustomFormatter? formatter = null;
             if (provider != null)
             {
                 formatter = (ICustomFormatter)provider.GetFormat(typeof(ICustomFormatter));
@@ -224,22 +226,23 @@ namespace Essential
                         // Template item:
                         if (index == length)
                         {
-                            throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);   
+                            throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                         }
 
                         // Argument name
                         int nameStart = index;
                         ch = chArray[index];
                         index++;
-                        if (!( ch == '_'
-                            || ch == '@'
-                            || ((ch >= 'a') && (ch <= 'z'))
-                            || ((ch >= 'A') && (ch <= 'Z'))))
+                        if (!(ch == '_'
+                              || ch == '@'
+                              || ((ch >= 'a') && (ch <= 'z'))
+                              || ((ch >= 'A') && (ch <= 'Z'))))
                         {
                             throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                         }
+
                         while ((index < length) &&
-                                ( ch == '.' || ch == '-' || ch == '_' || ch == '@'
+                               (ch == '.' || ch == '-' || ch == '_' || ch == '@'
                                 || ((ch >= '0') && (ch <= '9'))
                                 || ((ch >= 'a') && (ch <= 'z'))
                                 || ((ch >= 'A') && (ch <= 'Z'))))
@@ -247,13 +250,15 @@ namespace Essential
                             ch = chArray[index];
                             index++;
                         }
+
                         int nameEnd = index - 1;
-                        if( nameEnd == nameStart ) 
+                        if (nameEnd == nameStart)
                         {
                             throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                         }
+
                         string argumentName = new string(chArray, nameStart, nameEnd - nameStart);
-                        object arg;
+                        object? arg;
                         if (!tryGetArgumentValue(argumentName, out arg))
                         {
                             throw new FormatException(Resource_StringTemplate.StringTemplate_ArgumentNotFound);
@@ -269,12 +274,13 @@ namespace Essential
                         // Argument alignment
                         int width = 0;
                         bool leftAlign = false;
-                        if( ch == ',' ) 
+                        if (ch == ',')
                         {
                             if (index == length)
                             {
-                                throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);   
+                                throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                             }
+
                             ch = chArray[index];
                             index++;
                             while ((index < length) && (ch == ' '))
@@ -282,24 +288,29 @@ namespace Essential
                                 ch = chArray[index];
                                 index++;
                             }
+
                             if (index == length)
                             {
                                 throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                             }
+
                             if (ch == '-')
                             {
                                 leftAlign = true;
                                 if (index == length)
                                 {
-                                    throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);   
+                                    throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                                 }
+
                                 ch = chArray[index];
                                 index++;
                             }
+
                             if ((ch < '0') || (ch > '9'))
                             {
                                 throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                             }
+
                             while ((index < length) && (ch >= '0') && (ch <= '9'))
                             {
                                 // TODO: What if number too large for Int32, i.e. throw exception
@@ -317,13 +328,14 @@ namespace Essential
                         }
 
                         // Format string
-                        string formatString = null;
-                        if( ch == ':' )
+                        string? formatString = null;
+                        if (ch == ':')
                         {
                             if (index == length)
                             {
-                                throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);   
+                                throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                             }
+
                             int formatStart = index;
                             ch = chArray[index];
                             index++;
@@ -332,8 +344,9 @@ namespace Essential
                                 ch = chArray[index];
                                 index++;
                             }
+
                             int formatEnd = index - 1;
-                            if( formatEnd >= formatStart ) 
+                            if (formatEnd >= formatStart)
                             {
                                 formatString = new string(chArray, formatStart, formatEnd - formatStart);
                             }
@@ -342,13 +355,15 @@ namespace Essential
                         // Insert formatted argument
                         if (ch != '}')
                         {
-                            throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);   
+                            throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                         }
-                        string argumentValue = null;
+
+                        string? argumentValue = null;
                         if (formatter != null)
                         {
                             argumentValue = formatter.Format(formatString, arg, provider);
                         }
+
                         if (argumentValue == null)
                         {
                             if (arg is IFormattable)
@@ -360,15 +375,18 @@ namespace Essential
                                 argumentValue = arg.ToString();
                             }
                         }
+
                         if (argumentValue == null)
                         {
                             argumentValue = string.Empty;
                         }
+
                         int paddingCount = width - argumentValue.Length;
                         if (!leftAlign && (paddingCount > 0))
                         {
                             builder.Append(' ', paddingCount);
                         }
+
                         builder.Append(argumentValue);
                         if (leftAlign && (paddingCount > 0))
                         {
@@ -380,18 +398,21 @@ namespace Essential
                 {
                     // Literal -- scan up until next curly brace
                     int literalStart = index - 1;
-                    while( index < length )
+                    while (index < length)
                     {
                         ch = chArray[index];
-                        if( ch == '{' || ch == '}' )
+                        if (ch == '{' || ch == '}')
                         {
                             break;
                         }
+
                         index++;
                     }
+
                     builder.Append(chArray, literalStart, index - literalStart);
                 }
             }
+
             return builder.ToString();
         }
     }

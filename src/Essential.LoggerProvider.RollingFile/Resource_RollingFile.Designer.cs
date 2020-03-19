@@ -15,7 +15,7 @@ namespace Essential.Logging.RollingFile {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resource_RollingFile {
+    public class Resource_RollingFile {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -26,10 +26,10 @@ namespace Essential.Logging.RollingFile {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Essential.Logging.RollingFile.Resource_RollingFile", typeof(Resource_RollingFile).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Essential.LoggerProvider.Resource_RollingFile", typeof(Resource_RollingFile).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -37,7 +37,7 @@ namespace Essential.Logging.RollingFile {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -46,7 +46,7 @@ namespace Essential.Logging.RollingFile {
             }
         }
         
-        internal static string RollingTextWriter_ExhaustedLogfileNames {
+        public static string RollingTextWriter_ExhaustedLogfileNames {
             get {
                 return ResourceManager.GetString("RollingTextWriter_ExhaustedLogfileNames", resourceCulture);
             }

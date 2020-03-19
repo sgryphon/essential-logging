@@ -3,6 +3,33 @@ namespace Essential.Logging.RollingFile
     public class RollingFileLoggerOptions
     {
         /// <summary>
+        /// Gets or sets the template of the file path to write to. Replacement parameters may be used to construct rolling files.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// A rolling log file is achieved by including the date in the filename, so that when the date changes
+        /// a different file is used.
+        /// </para>
+        /// <para>
+        /// Available tokens are DateTime (a UTC DateTimeOffset) and LocalDateTime (a local DateTimeOffset), 
+        /// as well as ApplicationName, ProcessId, ProcessName and MachineName. These use standard .NET 
+        /// format strings, e.g. "Trace{DateTime:yyyyMMddTHH}.log" would generate a different log name
+        /// each hour.
+        /// </para>
+        /// <para>
+        /// The default filePathTemplate is "{ApplicationName}-{DateTime:yyyy-MM-dd}.log" (note that it uses
+        /// UTC time; you can override to LocalDateTime if you want).
+        /// </para>
+        /// </remarks>
+        public string FilePathTemplate { get; set; } = "{BaseDirectory}/{ApplicationName}-{DateTime:yyyy-MM-dd}.log";
+
+        /// <summary>
+        /// Gets or sets a value indicating whether scopes should be included in the message.
+        /// Defaults to <c>false</c>.
+        /// </summary>
+        public bool IncludeScopes { get; set; }
+
+        /// <summary>
         /// Gets or sets value indicating if logger accepts and queues writes.
         /// </summary>
         public bool IsEnabled { get; set; } = true;
@@ -32,33 +59,6 @@ namespace Essential.Logging.RollingFile
         /// use "{Source} {EventType}: {Id} : {Message}{Data}".
         /// </para>
         /// </remarks>
-        public string Template { get; set; } = "{DateTime:u} [{Thread}] {EventType} {Source} {Id}: {Message}{Data}";
-        
-        /// <summary>
-        /// Gets or sets a value indicating whether scopes should be included in the message.
-        /// Defaults to <c>false</c>.
-        /// </summary>
-        public bool IncludeScopes { get; set; }
-        
-        /// <summary>
-        /// Gets or sets the template of the file path to write to. Replacement parameters may be used to construct rolling files.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// A rolling log file is achieved by including the date in the filename, so that when the date changes
-        /// a different file is used.
-        /// </para>
-        /// <para>
-        /// Available tokens are DateTime (a UTC DateTimeOffset) and LocalDateTime (a local DateTimeOffset), 
-        /// as well as ApplicationName, ProcessId, ProcessName and MachineName. These use standard .NET 
-        /// format strings, e.g. "Trace{DateTime:yyyyMMddTHH}.log" would generate a different log name
-        /// each hour.
-        /// </para>
-        /// <para>
-        /// The default filePathTemplate is "{ApplicationName}-{DateTime:yyyy-MM-dd}.log" (note that it uses
-        /// UTC time; you can override to LocalDateTime if you want).
-        /// </para>
-        /// </remarks>
-        public string FilePathTemplate { get; set; } = "{BaseDirectory}/{ApplicationName}-{DateTime:yyyy-MM-dd}.log";
+        public string Template { get; set; } = "{DateTime:u} [{Thread}] {EventType} {Source} {Id}: {Message}{ScopeList}";
     }
 }
