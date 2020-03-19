@@ -22,7 +22,7 @@ namespace HelloRollingFile
 
         public static readonly Action<ILogger, string, Exception?> SignInToken =
             LoggerMessage.Define<string>(LogLevel.Trace,
-                new EventId(7000, nameof(SignInToken)),
+                new EventId(1, nameof(SignInToken)),
                 "Sign in secret token {SecretToken}.");
 
         public static readonly Action<ILogger, int, Exception?> StartingProcessing =

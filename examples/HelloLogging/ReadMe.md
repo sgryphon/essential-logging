@@ -230,4 +230,6 @@ dotnet run --project HelloLogging -- --Environment Staging
 
 With the basic console logger the information is limited, but is useful to get started. For additional log destinations you can add LoggerProviders.
 
+----
 
+**Next: [RollingFileLoggerProvider](../HelloRollingFile/ReadMe.md)**

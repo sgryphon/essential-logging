@@ -41,7 +41,8 @@ namespace Essential
 
         private static readonly Environment.SpecialFolder[] _specialFolders = new[]
         {
-            Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolder.ApplicationData,
+            Environment.SpecialFolder.CommonApplicationData, 
+            Environment.SpecialFolder.ApplicationData,
             Environment.SpecialFolder.LocalApplicationData
         };
 
@@ -62,9 +63,9 @@ namespace Essential
                 ["ProcessId"] = () => ProcessId(),
                 ["MachineName"] = () => Environment.MachineName,
                 ["ProcessName"] = ProcessName,
-                ["User"] = () => Environment.UserDomainName + "\\" + Environment.UserName,
                 ["UserName"] = () => Environment.UserName,
                 ["UserDomainName"] = () => Environment.UserDomainName,
+                ["CommandLine"] = () => Environment.CommandLine,
                 ["Process"] = () => Environment.CommandLine,
                 ["ApplicationName"] = ApplicationName,
                 ["AppDomain"] = () => AppDomain.CurrentDomain.FriendlyName,
