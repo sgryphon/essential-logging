@@ -138,7 +138,7 @@ namespace Essential.Logging
 
                 while (stream == null && num < _maxStreamRetries)
                 {
-                    var fullPath = num == 0 ? path : getFullPath(path, num);
+                    var fullPath = num == 0 ? path : GetFullPath(path, num);
                     try
                     {
                         stream = FileSystem.Open(fullPath, FileMode.Append, FileAccess.Write, FileShare.Read);
@@ -178,7 +178,7 @@ namespace Essential.Logging
             return result;
         }
 
-        private static string getFullPath(string path, int num)
+        private static string GetFullPath(string path, int num)
         {
             var extension = Path.GetExtension(path);
             return path.Insert(path.Length - extension.Length, "-" + num.ToString(CultureInfo.InvariantCulture));

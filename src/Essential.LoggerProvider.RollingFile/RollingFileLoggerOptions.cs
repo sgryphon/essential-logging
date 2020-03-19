@@ -59,6 +59,7 @@ namespace Essential.Logging.RollingFile
         /// use "{Source} {EventType}: {Id} : {Message}{Data}".
         /// </para>
         /// </remarks>
-        public string Template { get; set; } = "{DateTime:u} [{Thread}] {EventType} {Source} {Id}: {Message}{ScopeList}";
+        public string Template { get; set; } =
+            "{DateTime:u} [{Thread}] {EventType} {Source} {Id}: {Message}{ScopeList}";
     }
 }
