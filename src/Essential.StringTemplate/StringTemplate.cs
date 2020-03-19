@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Essential.Logging.Core;
 
 namespace Essential
 {
@@ -209,7 +208,7 @@ namespace Essential
                     }
                     else
                     {
-                        throw new FormatException(Resource_Core.StringTemplate_InvalidString);
+                        throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                     }
                 }
                 else if (ch == '{')
@@ -225,7 +224,7 @@ namespace Essential
                         // Template item:
                         if (index == length)
                         {
-                            throw new FormatException(Resource_Core.StringTemplate_InvalidString);   
+                            throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);   
                         }
 
                         // Argument name
@@ -237,7 +236,7 @@ namespace Essential
                             || ((ch >= 'a') && (ch <= 'z'))
                             || ((ch >= 'A') && (ch <= 'Z'))))
                         {
-                            throw new FormatException(Resource_Core.StringTemplate_InvalidString);
+                            throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                         }
                         while ((index < length) &&
                                 ( ch == '.' || ch == '-' || ch == '_' || ch == '@'
@@ -251,13 +250,13 @@ namespace Essential
                         int nameEnd = index - 1;
                         if( nameEnd == nameStart ) 
                         {
-                            throw new FormatException(Resource_Core.StringTemplate_InvalidString);
+                            throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                         }
                         string argumentName = new string(chArray, nameStart, nameEnd - nameStart);
                         object arg;
                         if (!getValue(argumentName, out arg))
                         {
-                            throw new FormatException(Resource_Core.StringTemplate_ArgumentNotFound);
+                            throw new FormatException(Resource_StringTemplate.StringTemplate_ArgumentNotFound);
                         }
 
                         // Skip blanks
@@ -274,7 +273,7 @@ namespace Essential
                         {
                             if (index == length)
                             {
-                                throw new FormatException(Resource_Core.StringTemplate_InvalidString);   
+                                throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);   
                             }
                             ch = chArray[index];
                             index++;
@@ -285,21 +284,21 @@ namespace Essential
                             }
                             if (index == length)
                             {
-                                throw new FormatException(Resource_Core.StringTemplate_InvalidString);
+                                throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                             }
                             if (ch == '-')
                             {
                                 leftAlign = true;
                                 if (index == length)
                                 {
-                                    throw new FormatException(Resource_Core.StringTemplate_InvalidString);   
+                                    throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);   
                                 }
                                 ch = chArray[index];
                                 index++;
                             }
                             if ((ch < '0') || (ch > '9'))
                             {
-                                throw new FormatException(Resource_Core.StringTemplate_InvalidString);
+                                throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);
                             }
                             while ((index < length) && (ch >= '0') && (ch <= '9'))
                             {
@@ -323,7 +322,7 @@ namespace Essential
                         {
                             if (index == length)
                             {
-                                throw new FormatException(Resource_Core.StringTemplate_InvalidString);   
+                                throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);   
                             }
                             int formatStart = index;
                             ch = chArray[index];
@@ -343,7 +342,7 @@ namespace Essential
                         // Insert formatted argument
                         if (ch != '}')
                         {
-                            throw new FormatException(Resource_Core.StringTemplate_InvalidString);   
+                            throw new FormatException(Resource_StringTemplate.StringTemplate_InvalidString);   
                         }
                         string argumentValue = null;
                         if (formatter != null)

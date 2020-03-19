@@ -8,28 +8,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Essential.Logging.Core {
+namespace Essential {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resource_Core {
+    public class Resource_StringTemplate {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resource_Core() {
+        internal Resource_StringTemplate() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Essential.StringTemplate.Resource_Core", typeof(Resource_Core).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Essential.Resource_StringTemplate", typeof(Resource_StringTemplate).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -37,7 +37,7 @@ namespace Essential.Logging.Core {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -46,13 +46,13 @@ namespace Essential.Logging.Core {
             }
         }
         
-        internal static string StringTemplate_ArgumentNotFound {
+        public static string StringTemplate_ArgumentNotFound {
             get {
                 return ResourceManager.GetString("StringTemplate_ArgumentNotFound", resourceCulture);
             }
         }
         
-        internal static string StringTemplate_InvalidString {
+        public static string StringTemplate_InvalidString {
             get {
                 return ResourceManager.GetString("StringTemplate_InvalidString", resourceCulture);
             }
