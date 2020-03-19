@@ -7,7 +7,7 @@
     <Copyright>Copyright © 2020 Gryphon Technology Pty Ltd</Copyright>
     <Version>0.0.1</Version>
     <RootNamespace>Essential.LoggerProvider</RootNamespace>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
@@ -34,8 +34,9 @@
     <PackageReference Include="GitVersionTask" Version="5.1.3">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
   </ItemGroup>
   
   <ItemGroup>

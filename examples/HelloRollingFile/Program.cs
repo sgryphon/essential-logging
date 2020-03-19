@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using Essential.LoggerProvider;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Configuration;
 
 namespace HelloRollingFile
 {
@@ -16,7 +12,7 @@ namespace HelloRollingFile
         public static Random Random = new Random();
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder()
+            Host.CreateDefaultBuilder(args)
                 .UseConsoleLifetime()
                 .ConfigureAppConfiguration((hostContext, configurationBuilder) =>
                 {
@@ -24,86 +20,20 @@ namespace HelloRollingFile
                 })
                 .ConfigureLogging((hostContext, loggingBuilder) =>
                 {
-                    var services = loggingBuilder.Services;
-                    if (hostContext.Configuration.GetSection("Logging:RollingFile").Exists())
-                    {
-                        services.Configure<RollingFileLoggerOptions>(x =>
-                            hostContext.Configuration.Bind("Logging:RollingFile", x));
-                        services.AddSingleton<ILoggerProvider, RollingFileLoggerProvider>();
-                        LoggerProviderOptions.RegisterProviderOptions<RollingFileLoggerOptions, RollingFileLoggerProvider>(services);
-                    }
-                })                .ConfigureServices((hostContext, services) =>
+                    loggingBuilder.AddRollingFile();
+                    // The default configuration section is "RollingFile"; if you want
+                    // a different section, you can manually configure:
+                    // loggingBuilder.AddRollingFile(options =>
+                    //     hostContext.Configuration.Bind("Logging:RollingFile", options));
+                })
+                .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddSingleton<WorkerRegistry>();
-                    int numberOfWorkers = Random.Next(2, 4);
-                    for (int i = 1; i <= numberOfWorkers; i++)
-                    {
-                        services.AddSingleton<IHostedService, Worker>();
-                    }
+                    services.AddHostedService<Worker>();
                 });
 
         public static async Task Main(string[] args)
         {
             await CreateHostBuilder(args).Build().RunAsync();
-        }
-    }
-
-    public class WorkerRegistry
-    {
-        public int _id;
-        public IList<Worker> Workers { get; } = new List<Worker>();
-        public int NextId() => Interlocked.Increment(ref _id);
-    }
-
-    public class Worker : BackgroundService
-    {
-        private readonly int _id;
-        private readonly ILogger _logger;
-        private int _pokedCount;
-        private readonly WorkerRegistry _registry;
-
-        public Worker(ILogger<Worker> logger, WorkerRegistry registry)
-        {
-            _logger = logger;
-            _registry = registry;
-            _id = _registry.NextId();
-            _registry.Workers.Add(this);
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            using (_logger.BeginScope($"worker {_id}"))
-            {
-                _logger.LogInformation(1500, "Worker {0} started", _id);
-                try
-                {
-                    while (!stoppingToken.IsCancellationRequested)
-                    {
-                        await Task.Delay(TimeSpan.FromMilliseconds(Program.Random.Next(500)), stoppingToken);
-                        int index = Program.Random.Next(_registry.Workers.Count);
-                        _logger.LogDebug("Worker {WorkerId} will poke {TargetIndex}", _id, index);
-                        await _registry.Workers[index].PokeAsync(stoppingToken);
-                    }
-                }
-                finally
-                {
-                    _logger.LogInformation(8500, "Worker {0} ending", _id);
-                }
-            }
-        }
-
-        public async Task PokeAsync(CancellationToken stoppingToken)
-        {
-            using (_logger.BeginScope($"poke {_id}"))
-            {
-                await Task.Delay(TimeSpan.FromMilliseconds(Program.Random.Next(500)), stoppingToken);
-                if (++_pokedCount < 4)
-                    Console.WriteLine("Hello World {0}", _pokedCount);
-                else if (_pokedCount < 6)
-                    _logger.LogWarning(4500, "Worker {WorkerId} getting annoyed", _id);
-                else
-                    _logger.LogError(5500, "Worker {WorkerId} too many pokes", _id);
-            }
         }
     }
 }

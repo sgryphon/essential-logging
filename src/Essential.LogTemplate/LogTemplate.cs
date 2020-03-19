@@ -72,6 +72,10 @@ namespace Essential
                     case "LOGLEVEL":
                         value = logLevel;
                         break;
+                    case "SHORTLEVEL":
+                    case "SHORTLOGLEVEL":
+                        value = GetShortLogLevel(logLevel);
+                        break;
                     case "FACILITY":
                         value = Facility;
                         break;
@@ -95,6 +99,7 @@ namespace Essential
                         value = FormatPrefix(message);
                         break;
                     case "SOURCE":
+                    case "CATEGORY":
                     case "CATEGORYNAME":
                         value = categoryName;
                         break;
@@ -158,7 +163,7 @@ namespace Essential
             }
         }
 
-        private string FormatScopes(object[]? scopes, string? prefix = null, string? separator = null)
+        private string? FormatScopes(object[]? scopes, string? prefix = null, string? separator = null)
         {
             if (scopes != null && scopes.Length > 0)
             {
@@ -167,6 +172,7 @@ namespace Essential
                 {
                     builder.Append(prefix);
                 }
+
                 for (int i = 0; i < scopes.Length; i++)
                 {
                     if (i > 0 && separator != null)
@@ -198,8 +204,32 @@ namespace Essential
                     return 4;
                 case LogLevel.Information:
                     return 6;
+                case LogLevel.Debug:
+                case LogLevel.Trace:
+                    return 7;
                 default:
                     return 7;
+            }
+        }
+
+        private string GetShortLogLevel(LogLevel logLevel)
+        {
+            switch (logLevel)
+            {
+                case LogLevel.Critical:
+                    return "crit";
+                case LogLevel.Error:
+                    return "fail";
+                case LogLevel.Warning:
+                    return "warn";
+                case LogLevel.Information:
+                    return "info";
+                case LogLevel.Debug:
+                    return "dbug";
+                case LogLevel.Trace:
+                    return "trce";
+                default:
+                    return ((int)logLevel).ToString("0000");
             }
         }
     }

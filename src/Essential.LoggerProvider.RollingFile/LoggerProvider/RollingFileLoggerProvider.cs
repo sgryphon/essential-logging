@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Essential.LoggerProvider
 {
+    [ProviderAlias("RollingFile")]
     public class RollingFileLoggerProvider : ILoggerProvider, ISupportExternalScope
     {
         private readonly ConcurrentDictionary<string, RollingFileLogger> _loggers;

@@ -60,6 +60,6 @@ namespace Essential.LoggerProvider
         /// </para>
         /// </remarks>
         public string Template { get; set; } =
-            "{DateTime:u} [{Thread}] {EventType} {Source} {Id}: {Message}{ScopeList}";
+            "{DateTime:u} [{ThreadId}] {LogLevel} {CategoryName} {Id}: {Message}{ScopeList} {Exception}";
     }
 }

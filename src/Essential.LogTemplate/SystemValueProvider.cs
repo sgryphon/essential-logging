@@ -69,7 +69,8 @@ namespace Essential
                 ["ApplicationName"] = ApplicationName,
                 ["AppDomain"] = () => AppDomain.CurrentDomain.FriendlyName,
                 ["PrincipalName"] = () => Thread.CurrentPrincipal?.Identity?.Name,
-                ["BaseDirectory"] = () => AppDomain.CurrentDomain.BaseDirectory
+                ["BaseDirectory"] = () => AppDomain.CurrentDomain.BaseDirectory,
+                ["CurrentDirectory"] = () => Environment.CurrentDirectory
 
                 // // case "WINDOWSIDENTITYNAME":
                 // //     value = FormatWindowsIdentityName();
