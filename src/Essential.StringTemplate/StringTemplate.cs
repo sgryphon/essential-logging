@@ -84,7 +84,7 @@ namespace Essential
         /// A specified parameter supplies culture-specific formatting information.
         /// </summary>
         /// <param name="template">A template string (see Remarks).</param>
-        /// <param name="getValue">An function that supplies named objects to format.</param>
+        /// <param name="tryGetArgumentValue">An function that supplies named objects to format.</param>
         /// <returns>A copy of template in which the template items have been replaced 
         /// by the string representation of the corresponding objects supplied by getValue.</returns>
         /// <exception cref="ArgumentNullException">template or the getValue callback is null.</exception>
@@ -103,9 +103,9 @@ namespace Essential
         /// are case-insensitive.
         /// </para>
         /// </remarks>
-        public static string Format(string template, GetValue getValue)
+        public static string Format(string template, TryGetArgumentValue tryGetArgumentValue)
         {
-            return Format(null, template, getValue);
+            return Format(null, template, tryGetArgumentValue);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Essential
         /// </summary>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
         /// <param name="template">A template string (see Remarks).</param>
-        /// <param name="getValue">An function that supplies named objects to format.</param>
+        /// <param name="tryGetArgumentValue">An function that supplies named objects to format.</param>
         /// <returns>A copy of template in which the template items have been replaced 
         /// by the string representation of the corresponding objects supplied by getValue.</returns>
         /// <exception cref="ArgumentNullException">template or the getValue callback is null.</exception>
@@ -171,15 +171,15 @@ namespace Essential
         /// are case-insensitive.
         /// </para>
         /// </remarks>
-        public static string Format(IFormatProvider provider, string template, GetValue getValue)
+        public static string Format(IFormatProvider provider, string template, TryGetArgumentValue tryGetArgumentValue)
         {
             if (template == null)
             {
                 throw new ArgumentNullException("template");
             }
-            if (getValue == null)
+            if (tryGetArgumentValue == null)
             {
-                throw new ArgumentNullException("getValue");
+                throw new ArgumentNullException("tryGetArgumentValue");
             }
 
             char[] chArray = template.ToCharArray(0, template.Length);
@@ -254,7 +254,7 @@ namespace Essential
                         }
                         string argumentName = new string(chArray, nameStart, nameEnd - nameStart);
                         object arg;
-                        if (!getValue(argumentName, out arg))
+                        if (!tryGetArgumentValue(argumentName, out arg))
                         {
                             throw new FormatException(Resource_StringTemplate.StringTemplate_ArgumentNotFound);
                         }
@@ -394,14 +394,5 @@ namespace Essential
             }
             return builder.ToString();
         }
-
-        /// <summary>
-        /// Provides named argument values for the StringTemplate.
-        /// </summary>
-        /// <param name="name">Name of the argument required.</param>
-        /// <param name="value">Value of the argument, if it exists.</param>
-        /// <returns>true if the argument name is valid, i.e. the value can be supplied; false if the argument name is invalid (usually treated as an error)</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        public delegate bool GetValue(string name, out object value);
     }
 }

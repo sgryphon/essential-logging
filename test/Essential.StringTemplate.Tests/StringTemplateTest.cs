@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace Essential.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class StringTemplateTest
     {
         public TestContext TestContext { get; set; }
 
-        [TestMethod()]
+        [TestMethod]
         public void FormatAtStart()
         {
             var template = "{a}y";
@@ -21,7 +21,7 @@ namespace Essential.Tests
             Assert.AreEqual("Ay", actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void FormatAtEnd()
         {
             var template = "x{a}";
@@ -160,7 +160,7 @@ namespace Essential.Tests
         {
             var template = "x";
 
-            var actual = StringTemplate.Format(template, (StringTemplate.GetValue)null);
+            var actual = StringTemplate.Format(template, (TryGetArgumentValue)null);
 
             Assert.Fail("Should have thrown exception.");
         }

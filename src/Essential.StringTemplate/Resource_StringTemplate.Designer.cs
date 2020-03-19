@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Reflection;
+
 namespace Essential {
     using System;
     
@@ -29,7 +31,7 @@ namespace Essential {
         public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Essential.Resource_StringTemplate", typeof(Resource_StringTemplate).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Essential.Resource_StringTemplate", typeof(Resource_StringTemplate).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

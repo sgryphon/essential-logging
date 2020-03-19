@@ -8,7 +8,8 @@ namespace Essential.Logging.RollingFile
     {
         private readonly string _categoryName;
         private readonly RollingFileLoggerProcessor _loggerProcessor;
-        TraceFormatter _traceFormatter = new TraceFormatter();
+        private LogTemplate _logTemplate;
+        private RollingFileLoggerOptions _options;
 
         internal RollingFileLogger(string categoryName, RollingFileLoggerProcessor loggerProcessor)
         {
@@ -18,7 +19,16 @@ namespace Essential.Logging.RollingFile
         
         internal IExternalScopeProvider ScopeProvider { get; set; }
 
-        internal RollingFileLoggerOptions Options { get; set; }
+        internal RollingFileLoggerOptions Options
+        {
+            get => _options;
+            set
+            {
+                _options = value;
+                _logTemplate = new LogTemplate(_options.Template);
+            }
+        }
+
         
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
@@ -35,26 +45,24 @@ namespace Essential.Logging.RollingFile
             var message = formatter(state, exception);
 
             var scopeProvider = ScopeProvider;
-            object[] data = null;
+            object[] scopes = null;
             if (Options.IncludeScopes && scopeProvider != null)
             {
-                var dataList = new List<object>();
-                scopeProvider.ForEachScope((scope, localDataList) =>
+                var scopeList = new List<object>();
+                scopeProvider.ForEachScope((scope, localList) =>
                 {
-                    localDataList.Add(scope);
-                }, dataList);
-                if (dataList.Count > 0)
-                {
-                    data = dataList.ToArray();
-                }
+                    localList.Add(scope);
+                }, scopeList);
+                scopes = scopeList.ToArray();
             }
             
-            var output = _traceFormatter.Format(Options.Template,
+            var output = _logTemplate.Bind(
                 _categoryName,
                 logLevel,
                 eventId,
                 message,
-                data
+                exception,
+                scopes
             );
             
             _loggerProcessor.EnqueueMessage(output);

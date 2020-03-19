@@ -15,57 +15,58 @@ namespace Essential.Tests
         [TestMethod()]
         public void FormatIdAndMessageTest()
         {
-            var traceFormatter = new TraceFormatter();
             string categoryName = "test";
             LogLevel logLevel = LogLevel.Warning;
-            int id = 5;
+            EventId eventId = new EventId(5, "five");
+            Exception? ex = null;
             string message = "fnord";
-            object[] data = null;
+            object[]? scopes = null;
             string template = "{Id}.{Message}";
+
+            var logTemplate = new LogTemplate(template);
+            var actual = logTemplate.Bind(categoryName, logLevel, eventId, message, ex, scopes);
+
             string expected = "5.fnord";
-
-            var actual = traceFormatter.Format(template, categoryName, logLevel, id, message, data);
-
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod()]
         public void FormatPrincipalNameTest()
         {
-            var traceFormatter = new TraceFormatter();
             string categoryName = "test";
             LogLevel logLevel = LogLevel.Warning;
-            int id = 5;
+            EventId eventId = new EventId(5, "five");
+            Exception? ex = null;
             string message = "fnord";
-            Guid? relatedActivityId = null;
-            object[] data = null;
+            object[]? scopes = null;
             string template = "{Id}.{PrincipalName}";
-            string expected = "5.testuser";
-            string actual = null;
 
+            var logTemplate = new LogTemplate(template);
+            string actual = null;
             using (var scope = new UserResetScope("testuser"))
             {
-                actual = traceFormatter.Format(template, categoryName, logLevel, id, message, data);
+                actual = logTemplate.Bind(categoryName, logLevel, eventId, message, ex, scopes);
             }
             
+            string expected = "5.testuser";
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod()]
         public void FormatProcessIdTest()
         {
-            var traceFormatter = new TraceFormatter();
             string categoryName = "test";
             LogLevel logLevel = LogLevel.Warning;
-            int id = 5;
+            EventId eventId = new EventId(5, "five");
+            Exception? ex = null;
             string message = "fnord";
-            Guid? relatedActivityId = null;
-            object[] data = null;
+            object[]? scopes = null;
             string template = "{ProcessId}";
+
+            var logTemplate = new LogTemplate(template);
+            var actual = logTemplate.Bind(categoryName, logLevel, eventId, message, ex, scopes);
+
             string expected = Process.GetCurrentProcess().Id.ToString();
-
-            var actual = traceFormatter.Format(template, categoryName, logLevel, id, message, data);
-
             Assert.AreEqual(expected, actual);
         }
 
@@ -112,75 +113,73 @@ namespace Essential.Tests
         [TestMethod()]
         public void FormatMessagePrefixAll()
         {
-            var traceFormatter = new TraceFormatter();
             string categoryName = "test";
             LogLevel logLevel = LogLevel.Warning;
-            int id = 0;
-            Guid? relatedActivityId = null;
-            object[] data = null;
-            string template = "<{MessagePrefix}>";
+            EventId eventId = new EventId(5, "five");
+            Exception? ex = null;
             string message = "Something to say";
+            object[]? scopes = null;
+            string template = "<{MessagePrefix}>";
+            
+            var logTemplate = new LogTemplate(template);
+            var actual = logTemplate.Bind(categoryName, logLevel, eventId, message, ex, scopes);
 
             string expected = "<Something to say>";
-
-            var actual = traceFormatter.Format(template, categoryName, logLevel, id, message, data);
-
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod()]
         public void FormatMessagePrefixSentinel()
         {
-            var traceFormatter = new TraceFormatter();
             string categoryName = "test";
             LogLevel logLevel = LogLevel.Warning;
-            int id = 0;
-            Guid? relatedActivityId = null;
-            object[] data = null;
-            string template = "<{MessagePrefix}>";
+            EventId eventId = new EventId(5, "five");
+            Exception? ex = null;
             string message = "Something to say. the rest of the trace.";
+            object[]? scopes = null;
+            string template = "<{MessagePrefix}>";
+
+            var logTemplate = new LogTemplate(template);
+            var actual = logTemplate.Bind(categoryName, logLevel, eventId, message, ex, scopes);
+
             string expected = "<Something to say>";
-
-            var actual = traceFormatter.Format(template, categoryName, logLevel, id, message, data);
-
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod()]
         public void FormatMessagePrefixLength()
         {
-            var traceFormatter = new TraceFormatter();
             string categoryName = "test";
             LogLevel logLevel = LogLevel.Warning;
-            int id = 0;
-            Guid? relatedActivityId = null;
-            object[] data = null;
-            string template = "<{MessagePrefix}>";
+            EventId eventId = new EventId(5, "five");
+            Exception? ex = null;
             //                1234567890123456789012345678901234567890
             string message = "Something to say Something to say Something to say. the rest of the trace.";
+            object[]? scopes = null;
+            string template = "<{MessagePrefix}>";
+
+            var logTemplate = new LogTemplate(template);
+            var actual = logTemplate.Bind(categoryName, logLevel, eventId, message, ex, scopes);
+
             string expect = "<Something to say Something to say Som...>";
-
-            var actual = traceFormatter.Format(template, categoryName, logLevel, id, message, data);
-
             Assert.AreEqual(expect, actual);
         }
 
         [TestMethod()]
         public void FormatMessagePrefixControlCharacter()
         {
-            var traceFormatter = new TraceFormatter();
             string categoryName = "test";
             LogLevel logLevel = LogLevel.Warning;
-            int id = 0;
-            Guid? relatedActivityId = null;
-            object[] data = null;
-            string template = "<{MessagePrefix}>";
+            EventId eventId = new EventId(5, "five");
+            Exception? ex = null;
             string message = "Something to\tsay";
+            object[]? scopes = null;
+            string template = "<{MessagePrefix}>";
 
+            var logTemplate = new LogTemplate(template);
+            var actual = logTemplate.Bind(categoryName, logLevel, eventId, message, ex, scopes);
+            
             string expected = "<Something tosay>";
-
-            var actual = traceFormatter.Format(template, categoryName, logLevel, id, message, data);
-
             Assert.AreEqual(expected, actual);
         }
 

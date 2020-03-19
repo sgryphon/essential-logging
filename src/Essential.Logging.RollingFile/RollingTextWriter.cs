@@ -15,7 +15,7 @@ namespace Essential.Logging
         private TextWriter _currentWriter;
         private object _fileLock = new object();
         private IFileSystem _fileSystem = new FileSystem();
-        TraceFormatter traceFormatter = new TraceFormatter();
+        SystemValueProvider _systemValueProvider = new SystemValueProvider();
 
         public RollingTextWriter()
         {
@@ -154,53 +154,14 @@ namespace Essential.Logging
             return path.Insert(path.Length - extension.Length, "-" + num.ToString(CultureInfo.InvariantCulture));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Portability", "CA1903:UseOnlyApiFromTargetedFramework", MessageId = "System.DateTimeOffset", Justification = "Deliberate dependency, .NET 2.0 SP1 required.")]
         private string GetCurrentFilePath()
         {
-            // TODO: Add special folder names (usually at the start of the path)
-            
-            var result = StringTemplate.Format(CultureInfo.CurrentCulture, FilePathTemplate,
+            var result = StringTemplate.Format(CultureInfo.CurrentCulture, FilePathTemplate, 
                 delegate(string name, out object value)
                 {
-                    switch (name.ToUpperInvariant())
+                    if (!_systemValueProvider.TryGetArgumentValue(name, out value))
                     {
-                        case "BASEDIRECTORY":
-                            value = AppDomain.CurrentDomain.BaseDirectory;
-                            break;
-                        case "ACTIVITYID":
-                            value = Trace.CorrelationManager.ActivityId;
-                            break;
-                        // case "APPDATA":
-                        //     value = traceFormatter.HttpTraceContext.AppDataPath;
-                        //     break;
-                        case "APPDOMAIN":
-                            value = AppDomain.CurrentDomain.FriendlyName;
-                            break;
-                        case "APPLICATIONNAME":
-                            value = traceFormatter.FormatApplicationName();
-                            break;
-                        case "DATETIME":
-                        case "UTCDATETIME":
-                            value = TraceFormatter.FormatUniversalTime();
-                            break;
-                        case "LOCALDATETIME":
-                            value = TraceFormatter.FormatLocalTime();
-                            break;
-                        case "MACHINENAME":
-                            value = Environment.MachineName;
-                            break;
-                        case "PROCESSID":
-                            value = traceFormatter.FormatProcessId();
-                            break;
-                        case "PROCESSNAME":
-                            value = traceFormatter.FormatProcessName();
-                            break;
-                        case "USER":
-                            value = Environment.UserDomainName + "-" + Environment.UserName;
-                            break;
-                        default:
-                            value = "{" + name + "}";
-                            return true;
+                        value = "{" + name + "}";
                     }
                     return true;
                 });

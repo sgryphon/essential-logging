@@ -2,10 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-
         <IsPackable>false</IsPackable>
-
         <RootNamespace>Essential.Tests</RootNamespace>
+      <LangVersion>latest</LangVersion>
+      <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

@@ -28,7 +28,7 @@ namespace Essential.Logging.RollingFile
         /// "{Source}&#x9;{EventType}&#x9;{Id}&#x9;{Message}&#x9;{Callstack}&#x9;{LogicalOperationStack}&#x9;{DateTime:u}&#x9;{ProcessId}&#x9;{ThreadId}&#x9;{Timestamp}&#x9;{MachineName}".
         /// </para>
         /// <para>
-        /// To get a format simliar to that produced by System.Diagnostics.TextWriterTraceListener,
+        /// To get a format similar to that produced by System.Diagnostics.TextWriterTraceListener,
         /// use "{Source} {EventType}: {Id} : {Message}{Data}".
         /// </para>
         /// </remarks>

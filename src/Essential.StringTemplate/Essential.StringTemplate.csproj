@@ -6,10 +6,9 @@
     <Authors>sgryphon</Authors>
     <Copyright>Copyright © 2020 Gryphon Technology Pty Ltd</Copyright>
     <Version>0.0.1</Version>
-    <LangVersion>latest</LangVersion>
     <RootNamespace>Essential</RootNamespace>
-    <Nullable>disable</Nullable>
-<!--    <Nullable>enable</Nullable>-->
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -35,7 +34,6 @@
     <PackageReference Include="GitVersionTask" Version="5.1.3">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.2" />
   </ItemGroup>
-
 </Project>
