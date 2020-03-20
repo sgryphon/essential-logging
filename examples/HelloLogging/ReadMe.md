@@ -1,3 +1,5 @@
+![Essential Logging](../../docs/images/diagnostics-logo-64.png)
+
 # Hello Logging
 
 Let’s introduce a slightly longer example than [getting started](../GettingStarted), and we can see what it can do.

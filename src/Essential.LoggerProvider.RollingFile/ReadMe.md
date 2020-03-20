@@ -1,3 +1,5 @@
+![Essential Logging](../../docs/images/diagnostics-logo-64.png)
+
 # RollingFileLoggerProvider
 
 This logger provider writes to a rolling log file, using a custom template, with the file rotated based on the time, e.g. daily, hourly, etc.
@@ -26,6 +28,8 @@ using Essential.LoggerProvider;
 ## Example
 
 * [HelloRollingFile](../../examples/HelloRollingFile/ReadMe.md)
+
+![Example - Rolling File](../../docs/images/example-rolling-file.png)
 
 ## Configuration
 

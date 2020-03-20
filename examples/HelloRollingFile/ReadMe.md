@@ -1,3 +1,5 @@
+![Essential Logging](../../docs/images/diagnostics-logo-64.png)
+
 # HelloRollingFile
 
 This logger provider writes to a rolling log file, using a custom template, with the file rotated based on the time, e.g. daily, hourly, etc.
@@ -17,6 +19,8 @@ dotnet run --project HelloRollingFile -- --Environment Default
 ```
 
 This will create a file `HelloRollingFile-xxxx.log` in the application directory, e.g. `bin/Debug/netcoreapp3.1`.
+
+![Example - Rolling File](../../docs/images/example-rolling-file.png)
 
 ## Configuration
 
