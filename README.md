@@ -1,103 +1,104 @@
-![Essential Logging](docs/images/Essential-Diagnostics-64.png)
+![Essential Logging](docs/images/diagnostics-logo-64.png)
 
 # Essential .NET Logging
 
-Guidance, links, and additional log destinations for .NET Microsoft.Extensions.Logging
+Guidance, links, utilities, and additional logger providers for .NET `Microsoft.Extensions.Logging`
 
-## Getting started
+## Using the loggers
 
-The simplest possible example, using the ubiquitous "Hello World".
+### Logger providers
 
-Create a new project:
+* PS> **dotnet add package [Essential.LoggerProvider.RollingFile](src/Essential.LoggerProvider.RollingFile)**
+* PS> **dotnet add package [Syslog.StructuredData](https://github.com/sgryphon/syslog-structureddata)**
+
+### Examples
+
+General `Microsoft.Extensions.Logging`:
+
+* [Getting Started](examples/GettingStarted)
+* [Hello Logging](examples/HelloLogging)
+
+Essential logging `Essential.LoggerProvider`:
+
+* [Hello Rolling File](examples/HelloRollingFile)
+
+### Guidance
+
+* [Theory of Event IDs](docs/Event-Ids.md) 
+* [Logging Levels](docs/Logging-Levels.md)
+
+From Microsoft:
+
+* [High performance logging](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/loggermessage)
+* [Logging Fundamentals](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/) -- scroll down to see the built in system categories and the built-in logging providers.
+
+
+## Development getting started
+
+### Pre-requisites
+
+* .NET Core 3.1 development tools
+
+#### Optional requirements
+
+* PowerShell Core, to run scripts
+* An editor, e.g. VS Code, if you want to contribute
+
+
+### Running unit tests
+
+To test:
+
+```
+dotnet test test/Essential.LogTemplate.Tests
+```
+
+### Test running examples
+
+Run examples and check the output:
 
 ```powershell
-dotnet new console --output GettingStarted
+dotnet run --project examples/HelloRollingFile
 ```
 
-Add a reference to the Microsoft console logging package:
+### Versioning
+
+Versioning is done automatically with GitVersion, so you can determine the build / package 
+number based on the git branch.
+
+### Packaging
+
+The libraries can be easily packaged for release. 
+
+If you do this on a branch, it will have a pre-release version. Once merged to master, it will have the correct GitVersion (including any `+major` or `+minor` version bumps).
 
 ```powershell
-dotnet add GettingStarted package Microsoft.Extensions.Logging.Console 
+dotnet pack src/Essential.LogTemplate -c Release --output pack
+dotnet pack src/Essential.LoggerProvider.RollingFile -c Release --output pack
 ```
 
-Change the `using` at the top of `Program.cs`, and replace the `Main()` function with the following:
+The results will output to the `pack` folder in the project, with the reference from the LoggerProvider to the LogTemplate automatically converted to a package dependency (with the same version number across both).
 
-**Program.cs**
-```c#
-using Microsoft.Extensions.Logging;
+#### Testing packages
 
-namespace GettingStarted
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            ILogger<Program> logger = LoggerFactory
-                .Create(logging => logging.AddConsole())
-                .CreateLogger<Program>();
-            logger.LogInformation("Hello World!");
-            Console.ReadLine();
-        }
-    }
-}
-```
-
-Run the console application:
+To turn off the automatic GitVersion numbering, and override with a specific package version (e.g. if you want to update and test package references before release):
 
 ```powershell
-dotnet run --project GettingStarted
+dotnet pack src/Essential.LogTemplate -p:GetVersion=false -p:PackageVersion=1.0.0 --output pack
+dotnet pack src/Essential.LoggerProvider.RollingFile -p:GetVersion=false -p:PackageVersion=1.0.0 --output pack
 ```
 
-A simple "Hello World" isn’t however very useful for showing the different capabilities of logging, so the next page will walk you through a [logging primer](docs/Logging-Primer.md) to introduce the range of features available in [Microsoft.Extensions.Logging](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging).
+There is a `nuget.config` file in the root of the project that adds the `pack` directory as a source, so that the examples can use it to reference the built packages.
 
-**Next: [Logging Primer](docs/Logging-Primer.md)**
-
-
-## Building the loggers
-
-For updating references across projects, you need to build depedent packages first:
-
-```powershell
-dotnet pack src/Essential.Logging.Core --output pack
-```
-
-This will output to the `pack` folder in the project, so they can be referenced by other projects, e.g. examples.
-
-```powershell
-dotnet pack src/Essential.Logging.RollingFile --output pack
-```
-
-Versioning is done with GitVersion, so you can determine the build / package number based on the git branch.
-
-### Updating and running examples
-
-While development you may test multiple builds of the same version, so you need to clear out the
-NuGet cache (delete from the .nuget/packages folder), force restore, and then run:
+Note that during development you may test multiple builds of the same version, so you need to clear out the NuGet cache (delete from the .nuget/packages folder) and force restore of packages before running:
 
 ```powershell
 Get-ChildItem (Join-Path $ENV:HOME '.nuget/packages/essential.logging.*') | Remove-Item -Recurse -Force
 dotnet restore examples/HelloRollingFile --force --no-cache
-dotnet run --project examples/HelloRollingFile
 ```
 
-???
 
-dotnet clean examples/HelloRollingFile
-
-
-## Using the loggers
-
-Use Nuget:
-
-## Guidance
-
-* High performance logging: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/loggermessage
-
-See the Microsoft documentation and scroll down to see the built in system categories, the built-in logging providers
-
-https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/
-
-### Other providers
+## Other logger provider projects
 
 * Rolling log file, by Andrew Lock
 
@@ -135,11 +136,6 @@ https://github.com/datalust/seq-extensions-logging
 * .NET Core 3.0 development tools
 ### Compile and test
 
-To test:
-
-```
-dotnet test ...
-```
 
 ### Optional requirements
 

@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Product>Essential.Logging</Product>
+    <Authors>sgryphon</Authors>
+    <Copyright>Copyright © 2020 Gryphon Technology Pty Ltd</Copyright>
+    <Version>0.0.1</Version>
+    <RootNamespace>Essential</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>
+      Utility library for Essential.Logging, with a log template formatter for system values and other utility functions. The template formatter includes different presentations of log information (log level, short code, event ID, scopes, etc), system information (thread, user, machine name, time, etc), and other values useful for logging (system directories, environment variables, etc).
+
+      Other Essential.Logging packages extend the .NET Microsoft.Extensions.Logging with guidance, links, utilities, and additional logger providers.
+
+      See the project site on GitHub for examples and documentation.
+    </Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/sgryphon/essential-logging</PackageProjectUrl>
+    <PackageIcon>diagnostics-logo-64.png</PackageIcon>
+    <PackageTags>Logging;Tracing;Diagnostics;Log;Trace</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\docs\images\diagnostics-logo-64.png" Pack="true" PackagePath="\">
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitVersionTask" Version="5.1.3">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.2" />
+  </ItemGroup>
+</Project>
