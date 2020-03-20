@@ -68,19 +68,16 @@ number based on the git branch.
 
 ### Packaging
 
-For updating references across projects, you need to build dependent packages first:
+The libraries can be easily packaged for release. 
+
+If you do this on a branch, it will have a pre-release version. Once merged to master, it will have the correct GitVersion (including any `+major` or `+minor` version bumps).
 
 ```powershell
-dotnet pack src/Essential.LogTemplate --output pack
+dotnet pack src/Essential.LogTemplate -c Release --output pack
+dotnet pack src/Essential.LoggerProvider.RollingFile -c Release --output pack
 ```
 
-This will output to the `pack` folder in the project.
-
-To build the logger provider package:
-
-```powershell
-dotnet pack src/Essential.LoggerProvider.RollingFile --output pack
-```
+The results will output to the `pack` folder in the project, with the reference from the LoggerProvider to the LogTemplate automatically converted to a package dependency (with the same version number across both).
 
 #### Testing packages
 
@@ -88,11 +85,12 @@ To turn off the automatic GitVersion numbering, and override with a specific pac
 
 ```powershell
 dotnet pack src/Essential.LogTemplate -p:GetVersion=false -p:PackageVersion=1.0.0 --output pack
+dotnet pack src/Essential.LoggerProvider.RollingFile -p:GetVersion=false -p:PackageVersion=1.0.0 --output pack
 ```
 
-Note that during development you may test
-multiple builds of the same version, so you need to clear out the
-NuGet cache (delete from the .nuget/packages folder) and force restore of packages before running:
+There is a `nuget.config` file in the root of the project that adds the `pack` directory as a source, so that the examples can use it to reference the built packages.
+
+Note that during development you may test multiple builds of the same version, so you need to clear out the NuGet cache (delete from the .nuget/packages folder) and force restore of packages before running:
 
 ```powershell
 Get-ChildItem (Join-Path $ENV:HOME '.nuget/packages/essential.logging.*') | Remove-Item -Recurse -Force

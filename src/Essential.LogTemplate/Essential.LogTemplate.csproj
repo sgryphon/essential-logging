@@ -13,9 +13,9 @@
 
   <PropertyGroup>
     <Description>
-      Core library for Essential.Logging, with a generic formatter and other utility functions.
+      Utility library for Essential.Logging, with a log template formatter for system values and other utility functions. The template formatter includes different presentations of log information (log level, short code, event ID, scopes, etc), system information (thread, user, machine name, time, etc), and other values useful for logging (system directories, environment variables, etc).
 
-      Other Essential.Logging packages extend the .NET Microsoft.Extensions.Logging with additional log providers, including a rolling file. 
+      Other Essential.Logging packages extend the .NET Microsoft.Extensions.Logging with guidance, links, utilities, and additional logger providers.
 
       See the project site on GitHub for examples and documentation.
     </Description>
