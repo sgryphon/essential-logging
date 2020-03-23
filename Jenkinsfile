@@ -7,7 +7,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        pwsh './build.ps1'
+        sh 'pwsh -File ./build.ps1'
       }
     }
 
