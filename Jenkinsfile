@@ -12,7 +12,6 @@ pipeline {
         sh 'echo $PATH'
         sh 'pwsh -v'
         sh 'pwsh -c "Write-Host aaaa"'
-        powershell 'Write-Host bbbb'
         pwsh 'Write-Host cccc'
         pwsh 'build.ps1'
       }
