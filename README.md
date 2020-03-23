@@ -140,6 +140,16 @@ https://github.com/datalust/seq-extensions-logging
 * Elasticsearch provider, with examples, tests, etc. This needs a batching mechanism (similar to ED Seq)
 * Other providers -- database, 
 
+## Jenkins
+
+
+
+https://jenkins.io/doc/pipeline/tour/getting-started/
+https://hub.docker.com/r/jenkinsci/blueocean/
+https://docs.docker.com/install/linux/linux-postinstall/
+
+
+
 ## License
 
 Copyright (C) 2019 Gryphon Technology Pty Ltd
