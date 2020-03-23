@@ -3,16 +3,15 @@ pipeline {
     docker {
       image 'mcr.microsoft.com/dotnet/core/sdk:3.1'
     }
-
   }
   stages {
     stage('Build') {
       steps {
         sh 'pwd'
-        sh 'dotnet --version'
+        sh 'whereis pwsh'
+        sh 'echo $PATH'
+        pwsh 'Write-Host "Host-PowerShell";'
         pwsh 'build.ps1'
-        sh 'mkdir pack'
-        sh 'dotnet build -p:WriteVersionInfoToBuildLog=false'
       }
     }
 
