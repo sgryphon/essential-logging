@@ -45,8 +45,8 @@ Run the console application:
 dotnet run --project GettingStarted
 ```
 
-A simple "Hello World" isn’t however very useful for showing the different capabilities of logging, so the next page will walk you through a [longer example](../HelloLogging/ReadMe.md) to introduce the range of features available in [Microsoft.Extensions.Logging](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging).
+A simple "Hello World" isn’t however very useful for showing the different capabilities of logging, so the next page will walk you through a [longer example](../HelloLogging) to introduce the range of features available in [Microsoft.Extensions.Logging](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging).
 
 ----
 
-**Next: [Hello Logging](../HelloLogging/ReadMe.md)**
+**Next: [Hello Logging](../HelloLogging)**

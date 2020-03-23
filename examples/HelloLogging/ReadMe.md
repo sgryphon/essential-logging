@@ -1,6 +1,8 @@
+![Essential Logging](../../docs/images/diagnostics-logo-64.png)
+
 # Hello Logging
 
-Let’s introduce a slightly longer example than [getting started](../GettingStarted/ReadMe.md), and we can see what it can do.
+Let’s introduce a slightly longer example than [getting started](../GettingStarted), and we can see what it can do.
 
 Note that this code is intended to demonstrate logging and does not necessarily follow best practices in order to keep things simple, 
 although it does try to include some of the logging features.
@@ -232,4 +234,4 @@ With the basic console logger the information is limited, but is useful to get s
 
 ----
 
-**Next: [RollingFileLoggerProvider](../HelloRollingFile/ReadMe.md)**
+**Next: [RollingFileLoggerProvider](../HelloRollingFile)**
