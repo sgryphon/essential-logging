@@ -10,9 +10,9 @@ pipeline {
       steps {
         sh 'pwd'
         pwsh '$PSVersionTable'
+        pwsh 'dotnet --version'
         sh 'dotnet version'
         sh 'dotnet build'
-        pwsh 'dotnet --version'
       }
     }
 
