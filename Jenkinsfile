@@ -14,7 +14,7 @@ pipeline {
       steps {
         sh 'pwd'
         sh 'dotnet --version'
-        sh 'dotnet build'
+        sh 'dotnet build -p:WriteVersionInfoToBuildLog=false'
       }
     }
 
@@ -26,8 +26,8 @@ pipeline {
 
     stage('Package') {
       steps {
-        sh 'dotnet pack src/Essential.LogTemplate -c Release --output pack'
-        sh 'dotnet pack src/Essential.LoggerProvider.RollingFile -c Release --output pack'
+        sh 'dotnet pack src/Essential.LogTemplate -c Release -p:WriteVersionInfoToBuildLog=false --output pack'
+        sh 'dotnet pack src/Essential.LoggerProvider.RollingFile -p:WriteVersionInfoToBuildLog=false -c Release --output pack'
       }
     }
 
