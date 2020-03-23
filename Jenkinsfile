@@ -7,6 +7,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
+        sh 'mkdir pack'
         sh 'pwsh -File ./build.ps1'
       }
     }
