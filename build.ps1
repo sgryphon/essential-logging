@@ -1,3 +1,4 @@
+#!/usr/bin/env pwsh
 Write-Host 'Building Essential Logging'
 
 dotnet tool restore
