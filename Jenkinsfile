@@ -10,9 +10,10 @@ pipeline {
         sh 'pwd'
         sh 'whereis pwsh'
         sh 'echo $PATH'
-        sh 'pwsh -c "Write-Host 'Hello sh World'"'
-        powershell 'Write-Host "Host-PowerShell"'
-        pwsh 'Write-Host "Host-Pwsh"'
+        sh 'pwsh -v'
+        sh 'pwsh -c "Write-Host aaaa"'
+        powershell 'Write-Host bbbb'
+        pwsh 'Write-Host cccc'
         pwsh 'build.ps1'
       }
     }
