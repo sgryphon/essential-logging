@@ -3,17 +3,14 @@ pipeline {
     docker {
       image 'mcr.microsoft.com/dotnet/core/sdk:3.1'
     }
+
   }
-  
-  environment {
-    DOTNET_CLI_HOME = "/tmp"
-  }
-  
   stages {
     stage('Build') {
       steps {
         sh 'pwd'
         sh 'dotnet --version'
+        sh 'mkdir pack'
         sh 'dotnet build'
       }
     }
@@ -31,5 +28,8 @@ pipeline {
       }
     }
 
+  }
+  environment {
+    DOTNET_CLI_HOME = '/tmp'
   }
 }
