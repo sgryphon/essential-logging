@@ -7,13 +7,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'pwd'
-        sh 'whereis pwsh'
-        sh 'echo $PATH'
-        sh 'pwsh -v'
-        sh 'pwsh -c "Write-Host aaaa"'
-        pwsh 'Write-Host cccc'
-        pwsh 'build.ps1'
+        pwsh './build.ps1'
       }
     }
 
