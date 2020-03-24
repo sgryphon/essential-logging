@@ -2,7 +2,9 @@
 Write-Host 'Building Essential Logging'
 
 dotnet tool restore
-$v = (dotnet tool run dotnet-gitversion | ConvertFrom-Json)
+dotnet gitversion
+$json = (dotnet tool run dotnet-gitversion)
+$v = ($json | ConvertFrom-Json)
 Write-Host "Building version $($v.NuGetVersion)"
 
 dotnet test (Join-Path $PSScriptRoot Essential.Logging.sln)
