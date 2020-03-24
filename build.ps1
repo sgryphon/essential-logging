@@ -3,9 +3,9 @@ Write-Host 'Building Essential Logging'
 
 dotnet tool restore
 
-Get-ChildItem /tmp/.nuget/packages/gitversion.tool/
+dotnet gitversion /output json /nofetch /diag
 
-dotnet gitversion /output json
+Write-Host "Getting GitVersion"
 $json = (dotnet tool run dotnet-gitversion /output json)
 $v = ($json | ConvertFrom-Json)
 Write-Host "Building version $($v.NuGetVersion)"
