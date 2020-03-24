@@ -3,7 +3,6 @@ pipeline {
     docker {
       // export LD_LIBRARY_PATH=/root/.nuget/packages/gitversion.tool/5.1.2/tools/netcoreapp3.0/any/runtimes/debian.9-x64/native/
       image 'mcr.microsoft.com/dotnet/core/sdk:3.1'
-      args '--env LD_LIBRARY_PATH=/root/.nuget/packages/gitversion.tool/5.2.4/tools/netcoreapp3.1/any/runtimes/debian.9-x64/native/'
     }
   }
   stages {
@@ -30,5 +29,6 @@ pipeline {
   }
   environment {
     DOTNET_CLI_HOME = '/tmp'
+    LD_LIBRARY_PATH = '/tmp/.nuget/packages/gitversion.tool/5.2.4/tools/netcoreapp3.1/any/runtimes/debian.9-x64/native/'
   }
 }
