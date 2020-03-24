@@ -9,6 +9,8 @@ pipeline {
     stage('Build') {
       steps {
         sh 'mkdir pack'
+        sh 'git branch -v'
+        sh 'git fetch origin +refs/heads/*:refs/remotes/origin/*'
         sh 'pwsh -File ./build.ps1'
       }
     }
