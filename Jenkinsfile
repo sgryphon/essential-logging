@@ -4,6 +4,9 @@ pipeline {
       image 'mcr.microsoft.com/dotnet/core/sdk:3.1'
     }
   }
+  options {
+    skipStagesAfterUnstable()
+  }
   stages {
     stage('Build') {
       steps {
@@ -15,7 +18,7 @@ pipeline {
 
     stage('Test') {
       steps {
-        sh 'dotnet test --no-build --verbosity normal'
+        sh 'dotnet test --no-build --verbosity normal --logger "trx;LogFileName=UnitTests.trx"'
       }
     }
 
@@ -27,6 +30,11 @@ pipeline {
       }
     }
 
+  }
+  post {
+    always {
+      step ([$class: 'MSTestPublisher', testResultsFile:"**/TestResults/UnitTests.trx", failOnError: true, keepLongStdio: true])
+    }
   }
   environment {
     // Need to have permission to write in $HOME
