@@ -10,7 +10,8 @@ pipeline {
       steps {
         sh 'mkdir pack'
         sh 'git branch -v'
-        sh 'git fetch --unshallow --progress --prune origin +refs/heads/*:refs/remotes/origin/*'
+        sh 'git fetch --progress --prune origin +refs/heads/*:refs/remotes/origin/*'
+        sh 'git branch -v'
         sh 'pwsh -File ./build.ps1'
       }
     }
