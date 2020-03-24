@@ -1,3 +1,5 @@
+![Essential Logging](../../docs/images/diagnostics-logo-64.png)
+
 # RollingFileLoggerProvider
 
 This logger provider writes to a rolling log file, using a custom template, with the file rotated based on the time, e.g. daily, hourly, etc.
@@ -27,6 +29,8 @@ using Essential.LoggerProvider;
 
 * [HelloRollingFile](../../examples/HelloRollingFile/ReadMe.md)
 
+![Example - Rolling File](../../docs/images/example-rolling-file.png)
+
 ## Configuration
 
 The logger provider will be automatically configured with any logging settings under the alias `RollingFile`. 
@@ -46,7 +50,7 @@ The following default settings are used, and can be overridden (we suggest at le
 }
 ```
 
-If you want to configure from a different section, it can be configure manually:
+If you want to configure from a different section, it can be configured manually:
 
 ```c#
     .ConfigureLogging((hostContext, loggingBuilder) =>
@@ -59,7 +63,7 @@ If you want to configure from a different section, it can be configure manually:
 ### Template options
 
 These template options are used in both the `FilePathTemplate` and log `Template`. If you want a rolling file you should 
-include a suitable data argument.
+include a suitable date argument.
 
 #### Log template values
 

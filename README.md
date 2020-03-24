@@ -129,26 +129,36 @@ Project repository at: https://github.com/mattwcole/gelf-extensions-logging
 https://github.com/datalust/seq-extensions-logging
 
 
-## Development getting started
+## Project to-do list / ideas
 
-### Pre-requisites
+* add unit tests for rolling file (copy from ED)
+* v1.1 of rolling file, with structured data support, facility support (to give full syslog format)
+* add readme to LogTemplate project and move template details there
+* FormattableString, that allows substring, ellipses, uppercase, lowercase, etc
+* rename ColoredConsole to LoggerProvider, and implement (copy from ED initially)
+* formats to match existing, e.g. values for Systemd, ScopeLine (with newline at end), MessageLine, ExceptionLine
+* Elasticsearch provider, with examples, tests, etc. This needs a batching mechanism (similar to ED Seq)
+* Other providers -- database, 
 
-* .NET Core 3.0 development tools
-### Compile and test
+## Jenkins
 
+For local build infrastructure (to test builds), there is a docker compose file in `build/docker` that will create a Jenkins instance and associated docker-in-docker container, to run agents.
 
-### Optional requirements
+Start the docker system:
 
-* PowerShell Core, to run build scripts
-* An editor, e.g. VS Code, if you want to contribute
-
-### Build with version number
-
-To build a release version and nuget package, with a gitversion based version number:
-
+```powershell
+docker-compose up -d
 ```
-./build.ps1
-```
+
+You can use Jenkins Blue Ocean to create a pipeline pointing to the Github (or local) repository. There is a `Jenkinsfile` that defines a pipeline to check compilation, run tests (with `-v normal` output), and then run a build script.
+
+The build script, `build.ps1` can also run locally and uses `GitVersion.Tool` to generate version numbers, then package a release version of the components.
+
+Some references:
+
+* https://jenkins.io/doc/pipeline/tour/getting-started/
+* https://hub.docker.com/r/jenkinsci/blueocean/
+* https://docs.docker.com/install/linux/linux-postinstall/
 
 
 ## License
