@@ -2,6 +2,9 @@
 Write-Host 'Building Essential Logging'
 
 dotnet tool restore
+
+Get-ChildItem /root/.nuget/packages/gitversion.tool/
+
 dotnet gitversion
 $json = (dotnet tool run dotnet-gitversion)
 $v = ($json | ConvertFrom-Json)
