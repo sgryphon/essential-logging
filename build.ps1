@@ -5,8 +5,8 @@ dotnet tool restore
 
 Get-ChildItem /tmp/.nuget/packages/gitversion.tool/
 
-dotnet gitversion
-$json = (dotnet tool run dotnet-gitversion)
+dotnet gitversion /output json
+$json = (dotnet tool run dotnet-gitversion /output json)
 $v = ($json | ConvertFrom-Json)
 Write-Host "Building version $($v.NuGetVersion)"
 
