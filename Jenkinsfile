@@ -1,37 +1,37 @@
 pipeline {
   agent {
     docker {
-      // export LD_LIBRARY_PATH=/root/.nuget/packages/gitversion.tool/5.1.2/tools/netcoreapp3.0/any/runtimes/debian.9-x64/native/
       image 'mcr.microsoft.com/dotnet/core/sdk:3.1'
     }
   }
   stages {
     stage('Build') {
       steps {
+        // Need 'pack' folder as Nuget source
         sh 'mkdir pack'
-        sh 'git branch -v'
-        sh 'git fetch --progress --prune origin +refs/heads/*:refs/remotes/origin/*'
-        sh 'git branch -v'
-        sh 'pwsh -File ./build.ps1'
+        sh 'dotnet build'
       }
     }
 
     stage('Test') {
       steps {
-        sh 'dotnet test --no-build'
+        sh 'dotnet test --no-build -verbosity normal'
       }
     }
 
     stage('Package') {
       steps {
-        sh 'dotnet pack src/Essential.LogTemplate -c Release -p:WriteVersionInfoToBuildLog=false --output pack'
-        sh 'dotnet pack src/Essential.LoggerProvider.RollingFile -p:WriteVersionInfoToBuildLog=false -c Release --output pack'
+        // Need full fetch refspec so that the build script can calculate GitVersion
+        sh 'git fetch --progress --tags --prune --prune-tags origin +refs/heads/*:refs/remotes/origin/*'
+        sh 'pwsh -File ./build.ps1'
       }
     }
 
   }
   environment {
+    // Need to have permission to write in $HOME
     DOTNET_CLI_HOME = '/tmp'
+    // Set library path so GitVersion can load native libraries (known bug)
     LD_LIBRARY_PATH = '/tmp/.nuget/packages/gitversion.tool/5.2.4/tools/netcoreapp3.1/any/runtimes/debian.9-x64/native/'
   }
 }

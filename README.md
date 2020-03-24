@@ -142,12 +142,23 @@ https://github.com/datalust/seq-extensions-logging
 
 ## Jenkins
 
+For local build infrastructure (to test builds), there is a docker compose file in `build/docker` that will create a Jenkins instance and associated docker-in-docker container, to run agents.
 
+Start the docker system:
 
-https://jenkins.io/doc/pipeline/tour/getting-started/
-https://hub.docker.com/r/jenkinsci/blueocean/
-https://docs.docker.com/install/linux/linux-postinstall/
+```powershell
+docker-compose up -d
+```
 
+You can use Jenkins Blue Ocean to create a pipeline pointing to the Github (or local) repository. There is a `Jenkinsfile` that defines a pipeline to check compilation, run tests (with `-v normal` output), and then run a build script.
+
+The build script, `build.ps1` can also run locally and uses `GitVersion.Tool` to generate version numbers, then package a release version of the components.
+
+Some references:
+
+* https://jenkins.io/doc/pipeline/tour/getting-started/
+* https://hub.docker.com/r/jenkinsci/blueocean/
+* https://docs.docker.com/install/linux/linux-postinstall/
 
 
 ## License
