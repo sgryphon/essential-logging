@@ -6,7 +6,7 @@
     <Authors>sgryphon</Authors>
     <Copyright>Copyright © 2020 Gryphon Technology Pty Ltd</Copyright>
     <Version>0.0.1</Version>
-    <RootNamespace>Essential.LoggerProvider</RootNamespace>
+    <RootNamespace>Essential</RootNamespace>
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>

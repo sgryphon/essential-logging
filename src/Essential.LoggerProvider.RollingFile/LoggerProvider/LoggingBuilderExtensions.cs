@@ -14,7 +14,7 @@ namespace Essential.LoggerProvider
             builder.Services.TryAddEnumerable(ServiceDescriptor
                 .Singleton<ILoggerProvider, RollingFileLoggerProvider>());
             builder.Services.TryAddEnumerable(ServiceDescriptor
-                .Singleton<IConfigureOptions<RollingFileLoggerOptions>, RollingFileOptionsSetup>());
+                .Singleton<IConfigureOptions<RollingFileLoggerOptions>, RollingFileLoggerOptionsSetup>());
             builder.Services.TryAddEnumerable(ServiceDescriptor
                 .Singleton<IOptionsChangeTokenSource<RollingFileLoggerOptions>, LoggerProviderOptionsChangeTokenSource<
                     RollingFileLoggerOptions, RollingFileLoggerProvider>>());
