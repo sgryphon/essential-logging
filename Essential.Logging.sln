@@ -36,6 +36,8 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essential.LoggerProvider.Elasticsearch", "src\Essential.LoggerProvider.Elasticsearch\Essential.LoggerProvider.Elasticsearch.csproj", "{048F5860-01A6-43EA-B22A-CD08B630F053}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloElasticsearch", "examples\HelloElasticsearch\HelloElasticsearch.csproj", "{2C8C0917-E139-4665-928C-37EE48C1F464}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -157,6 +159,18 @@ Global
 		{048F5860-01A6-43EA-B22A-CD08B630F053}.Release|x64.Build.0 = Release|Any CPU
 		{048F5860-01A6-43EA-B22A-CD08B630F053}.Release|x86.ActiveCfg = Release|Any CPU
 		{048F5860-01A6-43EA-B22A-CD08B630F053}.Release|x86.Build.0 = Release|Any CPU
+		{2C8C0917-E139-4665-928C-37EE48C1F464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C8C0917-E139-4665-928C-37EE48C1F464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C8C0917-E139-4665-928C-37EE48C1F464}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2C8C0917-E139-4665-928C-37EE48C1F464}.Debug|x64.Build.0 = Debug|Any CPU
+		{2C8C0917-E139-4665-928C-37EE48C1F464}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2C8C0917-E139-4665-928C-37EE48C1F464}.Debug|x86.Build.0 = Debug|Any CPU
+		{2C8C0917-E139-4665-928C-37EE48C1F464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C8C0917-E139-4665-928C-37EE48C1F464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C8C0917-E139-4665-928C-37EE48C1F464}.Release|x64.ActiveCfg = Release|Any CPU
+		{2C8C0917-E139-4665-928C-37EE48C1F464}.Release|x64.Build.0 = Release|Any CPU
+		{2C8C0917-E139-4665-928C-37EE48C1F464}.Release|x86.ActiveCfg = Release|Any CPU
+		{2C8C0917-E139-4665-928C-37EE48C1F464}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7B3EBD95-4C33-4A6B-81B7-D687B30FC676} = {9E02AA16-6D0E-48D3-B7F3-83720DFB8034}
@@ -164,5 +178,6 @@ Global
 		{056013D7-6040-411A-BEB2-AF82ADB8997B} = {4004E935-9BF8-4CB7-A58E-0CE459BA606E}
 		{26795C2A-2608-4CDE-976A-02A38908644A} = {4004E935-9BF8-4CB7-A58E-0CE459BA606E}
 		{6A25395C-FEC8-47F0-A9C0-964E5505BA64} = {4004E935-9BF8-4CB7-A58E-0CE459BA606E}
+		{2C8C0917-E139-4665-928C-37EE48C1F464} = {4004E935-9BF8-4CB7-A58E-0CE459BA606E}
 	EndGlobalSection
 EndGlobal
