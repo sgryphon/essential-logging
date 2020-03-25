@@ -34,6 +34,8 @@ ProjectSection(SolutionItems) = preProject
 	docs\Logging-Levels.md = docs\Logging-Levels.md
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essential.LoggerProvider.Elasticsearch", "src\Essential.LoggerProvider.Elasticsearch\Essential.LoggerProvider.Elasticsearch.csproj", "{048F5860-01A6-43EA-B22A-CD08B630F053}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,6 +145,18 @@ Global
 		{6A25395C-FEC8-47F0-A9C0-964E5505BA64}.Release|x64.Build.0 = Release|Any CPU
 		{6A25395C-FEC8-47F0-A9C0-964E5505BA64}.Release|x86.ActiveCfg = Release|Any CPU
 		{6A25395C-FEC8-47F0-A9C0-964E5505BA64}.Release|x86.Build.0 = Release|Any CPU
+		{048F5860-01A6-43EA-B22A-CD08B630F053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{048F5860-01A6-43EA-B22A-CD08B630F053}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{048F5860-01A6-43EA-B22A-CD08B630F053}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{048F5860-01A6-43EA-B22A-CD08B630F053}.Debug|x64.Build.0 = Debug|Any CPU
+		{048F5860-01A6-43EA-B22A-CD08B630F053}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{048F5860-01A6-43EA-B22A-CD08B630F053}.Debug|x86.Build.0 = Debug|Any CPU
+		{048F5860-01A6-43EA-B22A-CD08B630F053}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{048F5860-01A6-43EA-B22A-CD08B630F053}.Release|Any CPU.Build.0 = Release|Any CPU
+		{048F5860-01A6-43EA-B22A-CD08B630F053}.Release|x64.ActiveCfg = Release|Any CPU
+		{048F5860-01A6-43EA-B22A-CD08B630F053}.Release|x64.Build.0 = Release|Any CPU
+		{048F5860-01A6-43EA-B22A-CD08B630F053}.Release|x86.ActiveCfg = Release|Any CPU
+		{048F5860-01A6-43EA-B22A-CD08B630F053}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7B3EBD95-4C33-4A6B-81B7-D687B30FC676} = {9E02AA16-6D0E-48D3-B7F3-83720DFB8034}
