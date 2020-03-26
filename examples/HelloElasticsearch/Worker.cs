@@ -41,7 +41,14 @@ namespace HelloElasticsearch
                         }
 
                         Log.WarningEndOfProcessing(_logger, null);
-                        var points = total / rate;
+                        try
+                        {
+                            var points = total / rate;
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception("Calculation error", ex);
+                        }
                     }
                 }
                 catch (Exception ex)
