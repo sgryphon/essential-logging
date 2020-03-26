@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,6 +23,10 @@ namespace HelloElasticsearch
             var customerId = 12345;
             var orderId = "PO-56789";
             var dueDate = new DateTime(2020, 1, 2);
+            var token = new byte[] {0x12, 0x34, 0xbc, 0xde};
+            var checksum = (byte)0x9a;
+            var success = true;
+            var end = new DateTimeOffset( 2020, 1, 2, 3, 4, 5, TimeSpan.FromHours(6));
             var total = 100;
             var rate = 0;
 
@@ -29,7 +34,10 @@ namespace HelloElasticsearch
             {
                 try
                 {
-                    Log.SignInToken(_logger, "SDJ22slpwu029jsduY", null);
+                    using (_logger.BeginScope(new Dictionary<string, object> {["SecretToken"] = token}))
+                    {
+                        Log.SignInToken(_logger, checksum, success, null);
+                    }
                     using (_logger.BeginScope("Customer {CustomerId}, Order {OrderId}, Due {DueDate:yyyy-MM-dd}",
                         customerId, orderId, dueDate))
                     {
@@ -40,7 +48,7 @@ namespace HelloElasticsearch
                             Log.ProcessOrderItem(_logger, Guid.NewGuid(), null);
                         }
 
-                        Log.WarningEndOfProcessing(_logger, null);
+                        Log.WarningEndOfProcessing(_logger, end, null);
                         try
                         {
                             var points = total / rate;

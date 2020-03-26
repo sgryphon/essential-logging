@@ -20,19 +20,19 @@ namespace HelloElasticsearch
                 new EventId(1000, nameof(ProcessOrderItem)),
                 "Processing order item {ItemId}.");
 
-        public static readonly Action<ILogger, string, Exception?> SignInToken =
-            LoggerMessage.Define<string>(LogLevel.Trace,
+        public static readonly Action<ILogger, byte, bool, Exception?> SignInToken =
+            LoggerMessage.Define<byte, bool>(LogLevel.Trace,
                 new EventId(1, nameof(SignInToken)),
-                "Sign in secret token {SecretToken}.");
+                "Sign in secret token checksum {Checksum}: {Success}.");
 
         public static readonly Action<ILogger, int, Exception?> StartingProcessing =
             LoggerMessage.Define<int>(LogLevel.Debug,
                 new EventId(6000, nameof(StartingProcessing)),
                 "Starting processing of {ItemCount} items.");
 
-        public static readonly Action<ILogger, Exception?> WarningEndOfProcessing =
-            LoggerMessage.Define(LogLevel.Warning,
+        public static readonly Action<ILogger, DateTimeOffset, Exception?> WarningEndOfProcessing =
+            LoggerMessage.Define<DateTimeOffset>(LogLevel.Warning,
                 new EventId(4000, nameof(WarningEndOfProcessing)),
-                "End of processing reached.");
+                "End of processing reached at {EndTime}.");
     }
 }
