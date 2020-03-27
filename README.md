@@ -8,6 +8,7 @@ Guidance, links, utilities, and additional logger providers for .NET `Microsoft.
 
 ### Logger providers
 
+* PS> **dotnet add package [Essential.LoggerProvider.Elasticsearch](src/Essential.LoggerProvider.Elasticsearch)**
 * PS> **dotnet add package [Essential.LoggerProvider.RollingFile](src/Essential.LoggerProvider.RollingFile)**
 * PS> **dotnet add package [Syslog.StructuredData](https://github.com/sgryphon/syslog-structureddata)**
 
@@ -21,6 +22,7 @@ General `Microsoft.Extensions.Logging`:
 Essential logging `Essential.LoggerProvider`:
 
 * [Hello Rolling File](examples/HelloRollingFile)
+* [Hello Elasticsearch](examples/HelloElasticsearch)
 
 ### Guidance
 
