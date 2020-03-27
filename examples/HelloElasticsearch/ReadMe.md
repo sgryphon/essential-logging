@@ -2,7 +2,9 @@
 
 # HelloElasticsearch
 
-This logger provider writes to Elasticsearch and can be viewed in the Kibana console.
+This logger provider writes to the Elasticsearch-Logstash-Kibana stack. It writes directly to Elasticsearch, 
+following the [Elastic Common Schema (ECS)](https://www.elastic.co/guide/en/ecs/current/ecs-reference.html),
+with semantic logging of individual fields. The results can be viewed and queried in the Kibana console.
 
 ## Running the Example
 
@@ -30,15 +32,23 @@ http://localhost:5601
 
 You will be prompted to create a new index pattern, based on the received messages (if it says there are no log messages, you need to troubleshoot the issue).
 
-Use the index pattern "log-*", which matches the events sent, use the time filter "@timestamp", and create the pattern.
+Use the index pattern "dotnet-*", which matches the events sent, use the time filter "@timestamp", and create the pattern.
 
 On the Discover tab, you will see your log messages, with semantic parameters logged as individual fields. 
 
-You can configure columns as needed, and search for specific fields (e.g. "fields.CustomerId: 12345").
+You can configure columns as needed, and search for specific fields (e.g. "labels.CustomerId: 12345").
 
 **Example output: Elasticsearch via Kibana** 
 
 ![Example - Elasticsearch Kibana](../../docs/images/example-elasticsearch-kibana.png)
+
+You can also run with an environment override file of `Minimal`, to demonstrate some different configuration settings:
+
+```powershell
+dotnet run --project ./examples/HelloElasticsearch -- --Environment Minimal
+```
+
+### Stopping the container
 
 You can stop the container with `^C`. You can start it again, running in the background, with:
 
@@ -48,7 +58,7 @@ sudo docker-compose -f examples/HelloElasticsearch/docker/docker-compose.yml sta
 
 ## Configuration
 
-Examples of both a custom configuration (`appsettings.json`) is provided.
+Examples of both a custom configuration (`appsettings.json`) and minimal (`appsettings.Minimal.json`) are provided.
 
 Full details of the configuration, including the available template arguments, are in the ElasticsearchLoggerProvider project.
 

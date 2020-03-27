@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
 
 namespace HelloElasticsearch
 {
@@ -53,6 +54,7 @@ namespace HelloElasticsearch
 
                         using (_logger.BeginScope("{ItemsProcessed}", items))
                         {
+                            _logger.LogWarning("End of processing reached at {EndTime}.", end);
                             Log.WarningEndOfProcessing(_logger, end, null);
                         }
 
