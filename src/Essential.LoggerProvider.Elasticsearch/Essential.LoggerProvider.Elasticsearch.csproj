@@ -1,19 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Product>Essential.Logging</Product>
-    <Authors>sgryphon</Authors>
-    <Copyright>Copyright © 2020 Gryphon Technology Pty Ltd</Copyright>
-    <Version>0.0.1</Version>
-    <RootNamespace>Essential</RootNamespace>
-    <LangVersion>8</LangVersion>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+      <Product>Essential.Logging</Product>
+      <Authors>sgryphon</Authors>
+      <Copyright>Copyright © 2020 Gryphon Technology Pty Ltd</Copyright>
+      <Version>0.0.1</Version>
+      <RootNamespace>Essential</RootNamespace>
+        <LangVersion>8</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
   <PropertyGroup>
     <Description>
-      Rolling file logger provider for Microsoft.Extensions.Logging. Writes to a text file using a configurable template with support for multiple system values (thread, user, machine name, time, etc), rolling to a new file based on the date, time, or other template values.
+      Elasticsearch logger provider for Microsoft.Extensions.Logging.
 
       Other Essential.Logging packages extend the .NET Microsoft.Extensions.Logging with guidance, links, utilities, and additional logger providers.
 
@@ -29,13 +29,10 @@
   <ItemGroup>
     <None Include="..\..\docs\images\diagnostics-logo-64.png" Pack="true" PackagePath="\" />
   </ItemGroup>
-  
+
   <ItemGroup>
+    <PackageReference Include="Elasticsearch.Net" Version="7.6.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.2.0" />
   </ItemGroup>
   
-  <ItemGroup>
-    <ProjectReference Include="..\Essential.LogTemplate\Essential.LogTemplate.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -41,8 +41,7 @@ namespace Essential
 
         private static readonly Environment.SpecialFolder[] _specialFolders = new[]
         {
-            Environment.SpecialFolder.CommonApplicationData, 
-            Environment.SpecialFolder.ApplicationData,
+            Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolder.ApplicationData,
             Environment.SpecialFolder.LocalApplicationData
         };
 

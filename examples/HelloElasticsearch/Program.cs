@@ -5,7 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace HelloRollingFile
+
+namespace HelloElasticsearch
 {
     public class Program
     {
@@ -18,11 +19,11 @@ namespace HelloRollingFile
                 })
                 .ConfigureLogging((hostContext, loggingBuilder) =>
                 {
-                    loggingBuilder.AddRollingFile();
-                    // The default configuration section is "RollingFile"; if you want
+                    loggingBuilder.AddElasticsearch();
+                    // The default configuration section is "Elasticsearch"; if you want
                     // a different section, you can manually configure:
-                    // loggingBuilder.AddRollingFile(options =>
-                    //     hostContext.Configuration.Bind("Logging:CustomRollingFile", options));
+                    // loggingBuilder.AddElasticsearch(options =>
+                    //     hostContext.Configuration.Bind("Logging:CustomElasticsearch", options));
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
