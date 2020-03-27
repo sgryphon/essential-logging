@@ -42,13 +42,20 @@ namespace HelloElasticsearch
                         customerId, orderId, dueDate))
                     {
                         Log.StartingProcessing(_logger, 4, null);
+                        var items = new List<Guid>();
                         for (var i = 0; i < 4; i++)
                         {
                             await Task.Delay(TimeSpan.FromMilliseconds(1000), stoppingToken).ConfigureAwait(false);
-                            Log.ProcessOrderItem(_logger, Guid.NewGuid(), null);
+                            var item = Guid.NewGuid();
+                            Log.ProcessOrderItem(_logger, item, null);
+                            items.Add(item);
                         }
 
-                        Log.WarningEndOfProcessing(_logger, end, null);
+                        using (_logger.BeginScope("{ItemsProcessed}", items))
+                        {
+                            Log.WarningEndOfProcessing(_logger, end, null);
+                        }
+
                         try
                         {
                             var points = total / rate;
@@ -61,7 +68,10 @@ namespace HelloElasticsearch
                 }
                 catch (Exception ex)
                 {
-                    Log.ErrorProcessingCustomer(_logger, customerId, ex);
+                    using (_logger.BeginScope("PlainScope"))
+                    {
+                        Log.ErrorProcessingCustomer(_logger, customerId, ex);
+                    }
                 }
             }
 
