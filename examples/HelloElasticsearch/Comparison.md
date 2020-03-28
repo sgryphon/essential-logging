@@ -83,6 +83,8 @@
 
 ## Serilog
 
+From local sample program running Serilog.Sinks.ElasticSearch, version 8.0.1.
+
 ```json
 {
   "_index": "logstash-2020.03.27",
@@ -132,4 +134,51 @@
 
 ## Log4net
 
+Both https://github.com/bruno-garcia/log4net.ElasticSearch and https://github.com/ptylenda/log4net.ElasticSearch.Async have the same example:
 
+```json
+{
+	"_index": "log-2016.02.12",
+	"_type": "logEvent",
+	"_id": "AVLXHEwEJfnUYPcgkJ5r",
+	"_version": 1,
+	"_score": 1,
+	"_source": {
+		"timeStamp": "2016-02-12T20:11:41.5864254Z",
+		"message": "Something broke.",
+		"messageObject": {},
+		"exception": {
+			"Type": "System.Exception",
+			"Message": "There was a system error",
+			"HelpLink": null,
+			"Source": null,
+			"HResult": -2146233088,
+			"StackTrace": null,
+			"Data": {
+				"CustomProperty": "CustomPropertyValue",
+				"SystemUserID": "User43"
+			},
+			"InnerException": null
+		},
+		"loggerName": "log4net.ES.Example.Program",
+		"domain": "log4net.ES.Example.vshost.exe",
+		"identity": "",
+		"level": "ERROR",
+		"className": "log4net.ES.Example.Program",
+		"fileName": "C:\\Users\\jtoto\\projects\\log4net.ES.Example\\log4net.ES.Example\\Program.cs",
+		"lineNumber": "26",
+		"fullInfo": "log4net.ES.Example.Program.Main(C:\\Users\\jtoto\\projects\\log4net.ES.Example\\log4net.ES.Example\\Program.cs:26)",
+		"methodName": "Main",
+		"fix": "LocationInfo, UserName, Identity, Partial",
+		"properties": {
+			"log4net:Identity": "",
+			"log4net:UserName": "JToto",
+			"log4net:HostName": "JToto01",
+			"@timestamp": "2016-02-12T20:11:41.5864254Z"
+		},
+		"userName": "JToto",
+		"threadName": "9",
+		"hostName": "JTOTO01"
+	}
+}
+```
