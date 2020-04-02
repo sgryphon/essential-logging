@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -27,9 +30,12 @@ namespace HelloElasticsearch
             var token = new byte[] {0x12, 0x34, 0xbc, 0xde};
             var checksum = (byte)0x9a;
             var success = true;
-            var end = new DateTimeOffset( 2020, 1, 2, 3, 4, 5, TimeSpan.FromHours(6));
+            var end = new DateTimeOffset(2020, 1, 2, 3, 4, 5, TimeSpan.FromHours(6));
             var total = 100;
             var rate = 0;
+
+            Thread.CurrentPrincipal = new ClaimsPrincipal(new GenericIdentity("sgryphon+es@live.com"));
+            Trace.CorrelationManager.ActivityId = Guid.NewGuid();
 
             using (_logger.BeginScope("IP address {ip}", ipAddress))
             {
@@ -39,6 +45,7 @@ namespace HelloElasticsearch
                     {
                         Log.SignInToken(_logger, checksum, success, null);
                     }
+
                     using (_logger.BeginScope("Customer {CustomerId}, Order {OrderId}, Due {DueDate:yyyy-MM-dd}",
                         customerId, orderId, dueDate))
                     {
