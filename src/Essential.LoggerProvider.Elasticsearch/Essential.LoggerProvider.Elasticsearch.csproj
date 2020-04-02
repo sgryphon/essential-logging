@@ -5,7 +5,7 @@
       <Product>Essential.Logging</Product>
       <Authors>sgryphon</Authors>
       <Copyright>Copyright © 2020 Gryphon Technology Pty Ltd</Copyright>
-      <Version>0.0.1</Version>
+      <Version>1.0.0+bd3ad6</Version>
       <RootNamespace>Essential</RootNamespace>
         <LangVersion>8</LangVersion>
         <Nullable>enable</Nullable>
@@ -29,6 +29,7 @@ See the project site on GitHub for examples and documentation.</Description>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Elastic.CommonSchema" Version="1.5.0" />
     <PackageReference Include="Elasticsearch.Net" Version="7.6.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.2.0" />
   </ItemGroup>

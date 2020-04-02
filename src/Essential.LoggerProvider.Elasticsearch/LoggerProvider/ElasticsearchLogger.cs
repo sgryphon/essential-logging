@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Essential.LoggerProvider.Ecs;
+using System.Threading;
+using Elastic.CommonSchema;
 using Microsoft.Extensions.Logging;
-using Thread = System.Threading.Thread;
 using Trace = System.Diagnostics.Trace;
 
 namespace Essential.LoggerProvider
@@ -63,7 +63,7 @@ namespace Essential.LoggerProvider
                 // Maybe render to JSON in-process, then queue bytes for sending to index ??
 
                 var elasticsearchData =
-                    BuildElasticsearchData(_categoryName, logLevel, eventId, state, exception, formatter);
+                    BuildLogEvent(_categoryName, logLevel, eventId, state, exception, formatter);
 
                 _dataProcessor.EnqueueMessage(elasticsearchData);
             }
@@ -73,33 +73,36 @@ namespace Essential.LoggerProvider
             }
         }
 
-        private static void AddException(Exception exception, ElasticsearchData elasticsearchData)
+        private static void AddException(Exception exception, LogEvent logEvent)
         {
             // Use the full string of the exception, which includes both the outer stack trace and any
             // inner exceptions and their stack trace. It also includes any additional values that some
             // exceptions have in ToString() that is not in Message.
             var stackTrace = exception.ToString();
-            elasticsearchData.Error = new Error(exception.GetType().FullName, exception.Message, stackTrace);
+            logEvent.Error = new Error
+            {
+                Type = exception.GetType().FullName, Message = exception.Message, StackTrace = stackTrace
+            };
         }
 
-        private void AddScopeValues(ElasticsearchData elasticsearchData)
+        private void AddScopeValues(LogEvent logEvent)
         {
             var scopeProvider = ScopeProvider;
             if (Options.IncludeScopes && scopeProvider != null)
             {
                 scopeProvider.ForEachScope((scope, innerData) =>
                 {
-                    if (elasticsearchData.Labels == null)
+                    if (logEvent.Labels == null)
                     {
-                        elasticsearchData.Labels = new Dictionary<string, string>();
+                        logEvent.Labels = new Dictionary<string, object>();
                     }
 
-                    if (elasticsearchData.Scopes == null)
+                    if (logEvent.Scopes == null)
                     {
-                        elasticsearchData.Scopes = new List<string>();
+                        logEvent.Scopes = new List<string>();
                     }
 
-                    bool isFormattedLogValues = false;
+                    var isFormattedLogValues = false;
                     if (scope is IEnumerable<KeyValuePair<string, object>> scopeValues)
                     {
                         foreach (var kvp in scopeValues)
@@ -110,98 +113,109 @@ namespace Essential.LoggerProvider
                             }
                             else
                             {
-                                elasticsearchData.Labels[kvp.Key] = FormatValue(kvp.Value);
+                                logEvent.Labels[kvp.Key] = FormatValue(kvp.Value);
                             }
                         }
                     }
 
                     var formattedScope = isFormattedLogValues ? scope.ToString() : FormatValue(scope);
-                    elasticsearchData.Scopes.Add(formattedScope);
-                }, elasticsearchData);
+                    logEvent.Scopes.Add(formattedScope);
+                }, logEvent);
             }
         }
 
-        private void AddStateValues<TState>(TState state, ElasticsearchData elasticsearchData)
+        private void AddStateValues<TState>(TState state, LogEvent logEvent)
         {
             if (state is IEnumerable<KeyValuePair<string, object>> stateValues)
             {
                 if (stateValues.Count() > 0)
                 {
-                    if (elasticsearchData.Labels == null)
+                    if (logEvent.Labels == null)
                     {
-                        elasticsearchData.Labels = new Dictionary<string, string>();
+                        logEvent.Labels = new Dictionary<string, object>();
                     }
 
                     foreach (var kvp in stateValues)
                     {
                         if (kvp.Key == "{OriginalFormat}")
                         {
-                            elasticsearchData.MessageTemplate = kvp.Value.ToString();
+                            logEvent.MessageTemplate = kvp.Value.ToString();
                         }
                         else
                         {
-                            elasticsearchData.Labels[kvp.Key] = FormatValue(kvp.Value);
+                            logEvent.Labels[kvp.Key] = FormatValue(kvp.Value);
                         }
                     }
                 }
             }
         }
 
-        private ElasticsearchData BuildElasticsearchData<TState>(string categoryName, LogLevel logLevel,
+        private LogEvent BuildLogEvent<TState>(string categoryName, LogLevel logLevel,
             EventId eventId, TState state, Exception? exception,
             Func<TState, Exception, string> formatter)
         {
-            var elasticsearchData = new ElasticsearchData();
+            var logEvent = new LogEvent();
 
-            elasticsearchData.Timestamp = ElasticsearchLoggerProvider.LocalDateTimeProvider();
-            elasticsearchData.Message = formatter(state, exception!);
-            elasticsearchData.Log = new Log(logLevel, categoryName);
-            elasticsearchData.Event =
-                new Event(eventId.Name, eventId.Id.ToString(), _dataProcessor.GetSeverity(logLevel));
+            logEvent.Ecs = _dataProcessor.GetEcs();
+            logEvent.Timestamp = ElasticsearchLoggerProvider.LocalDateTimeProvider();
+            logEvent.Message = formatter(state, exception!);
+            logEvent.Log = new Log {Level = logLevel.ToString(), Logger = categoryName};
+            logEvent.Event =
+                new Event
+                {
+                    Action = eventId.Name,
+                    Code = eventId.Id.ToString(),
+                    Severity = _dataProcessor.GetSeverity(logLevel)
+                };
 
             if (exception != null)
             {
-                AddException(exception, elasticsearchData);
+                AddException(exception, logEvent);
             }
 
-            elasticsearchData.Agent = _dataProcessor.GetAgent();
-            elasticsearchData.Service = _dataProcessor.GetService();
+            logEvent.Agent = _dataProcessor.GetAgent();
+            logEvent.Service = _dataProcessor.GetService();
 
             if (_options.Tags != null && _options.Tags.Length > 0)
             {
-                elasticsearchData.Tags = _options.Tags;
+                logEvent.Tags = _options.Tags;
             }
 
             if (_options.IncludeHost)
             {
-                elasticsearchData.Host = _dataProcessor.GetHost();
+                logEvent.Host = _dataProcessor.GetHost();
             }
 
             if (_options.IncludeProcess)
             {
-                elasticsearchData.Process = _dataProcessor.GetProcess();
+                logEvent.Process = _dataProcessor.GetProcess();
             }
 
             if (_options.IncludeUser)
             {
-                elasticsearchData.User = new User(Thread.CurrentPrincipal?.Identity.Name, Environment.UserName,
-                    Environment.UserDomainName);
+                logEvent.User = new User
+                {
+                    Id = Thread.CurrentPrincipal?.Identity.Name,
+                    Name = Environment.UserName,
+                    Domain = Environment.UserDomainName
+                };
             }
 
             if (!Trace.CorrelationManager.ActivityId.Equals(Guid.Empty))
             {
-                elasticsearchData.Trace = new Ecs.Trace(Trace.CorrelationManager.ActivityId.ToString());
+                logEvent.Trace =
+                    new Elastic.CommonSchema.Trace() {Id = Trace.CorrelationManager.ActivityId.ToString()};
             }
 
             if (_options.IncludeScopes)
             {
-                AddScopeValues(elasticsearchData);
+                AddScopeValues(logEvent);
             }
 
             // These will overwrite any scope values with the same name
-            AddStateValues(state, elasticsearchData);
+            AddStateValues(state, logEvent);
 
-            return elasticsearchData;
+            return logEvent;
         }
 
         private string FormatEnumerable(IEnumerable enumerable, int depth)

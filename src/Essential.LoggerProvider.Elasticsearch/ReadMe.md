@@ -134,83 +134,83 @@ The `_source` field is the message sent from the LoggerProvider, along with the 
 
 ```json
 {
-  "_index": "dotnet-2020.03.26",
+  "_index": "dotnet-2020.04.01",
   "_type": "_doc",
-  "_id": "e17bfee9-8fb9-4de3-ab04-335718f37aa1",
+  "_id": "b1f9c454-4562-4a37-a950-441dcda83f48",
   "_version": 1,
   "_score": null,
   "_source": {
+    "MessageTemplate": "Unexpected error processing customer {CustomerId}.",
+    "Scopes": [
+      "IP address 2001:db8:85a3::8a2e:370:7334",
+      "PlainScope"
+    ],
     "agent": {
-      "type": "Essential.LoggerProvider.Elasticsearch",
-      "version": "1.1.1+bd3ad63"
+      "version": "1.0.0+bd3ad6",
+      "type": "Essential.LoggerProvider.Elasticsearch"
     },
     "ecs": {
-      "version": "1.5"
+      "version": "1.5.0"
     },
     "error": {
       "message": "Calculation error",
-      "stack_trace": "System.Exception: Calculation error\n ---> System.DivideByZeroException: Attempted to divide by zero.\n   at HelloElasticsearch.Worker.ExecuteAsync(CancellationToken stoppingToken) in /home/sly/Code/essential-logging/examples/HelloElasticsearch/Worker.cs:line 63\n   --- End of inner exception stack trace ---\n   at HelloElasticsearch.Worker.ExecuteAsync(CancellationToken stoppingToken) in /home/sly/Code/essential-logging/examples/HelloElasticsearch/Worker.cs:line 67",
-      "type": "System.Exception"
+      "type": "System.Exception",
+      "stack_trace": "System.Exception: Calculation error\n ---> System.DivideByZeroException: Attempted to divide by zero.\n   at HelloElasticsearch.Worker.ExecuteAsync(CancellationToken stoppingToken) in /home/sly/Code/essential-logging/examples/HelloElasticsearch/Worker.cs:line 70\n   --- End of inner exception stack trace ---\n   at HelloElasticsearch.Worker.ExecuteAsync(CancellationToken stoppingToken) in /home/sly/Code/essential-logging/examples/HelloElasticsearch/Worker.cs:line 74"
     },
     "event": {
-      "name": "ErrorProcessingCustomer",
       "code": "5000",
+      "action": "ErrorProcessingCustomer",
       "severity": 3
     },
     "host": {
-      "architecture": "X64",
-      "hostname": "VUB1804",
       "os": {
-        "full": "Linux 4.15.0-91-generic #92-Ubuntu SMP Fri Feb 28 11:09:48 UTC 2020",
         "platform": "Unix",
+        "full": "Linux 4.15.0-91-generic #92-Ubuntu SMP Fri Feb 28 11:09:48 UTC 2020",
         "version": "4.15.0.91"
-      }
-    },
-    "labels": {
-      "ip": "2001:db8:85a3::8a2e:370:7334",
-      "CustomerId": "12345"
+      },
+      "hostname": "VUB1804",
+      "architecture": "X64"
     },
     "log": {
       "level": "Error",
       "logger": "HelloElasticsearch.Worker"
     },
-    "message": "Unexpected error processing customer 12345.",
-    "MessageTemplate": "Unexpected error processing customer {CustomerId}.",
     "process": {
-      "name": "HelloElasticsearch",
-      "pid": 20273,
       "thread": {
         "id": 6
-      }
+      },
+      "pid": 21054,
+      "name": "HelloElasticsearch"
     },
-    "Scopes": [
-      "IP address 2001:db8:85a3::8a2e:370:7334",
-      "PlainScope"
-    ],
     "service": {
       "type": "HelloElasticsearch",
       "version": "1.0.0"
     },
+    "user": {
+      "id": "sgryphon+es@live.com",
+      "name": "sly",
+      "domain": "VUB1804"
+    },
+    "@timestamp": "2020-04-02T21:30:56.1351149+10:00",
     "tags": [
       "Development"
     ],
-    "trace": {
-      "id": "9d9df7e6-3a1f-4917-bf12-a50575097897"
+    "labels": {
+      "ip": "2001:db8:85a3::8a2e:370:7334",
+      "CustomerId": "12345"
     },
-    "@timestamp": "2020-03-27T12:53:17.6266621+10:00",
-    "user": {
-      "domain": "VUB1804",
-      "id": "sgryphon+es@live.com",
-      "name": "sly"
+    "message": "Unexpected error processing customer 12345.",
+    "trace": {
+      "id": "380f61e2-c365-4c8c-96d9-1ccfb9ded562"
     }
   },
   "fields": {
     "@timestamp": [
-      "2020-03-27T02:53:17.626Z"
+      "2020-04-02T11:30:56.135Z"
     ]
   },
   "sort": [
-    1585277597626
+    1585827056135
   ]
 }
 ```
@@ -222,7 +222,7 @@ The `_source` field is the message sent from the LoggerProvider, along with the 
 | @timestamp | date | `DateTimeOffset` when the message was logged, including local offset. |
 | message | string | The formatted log message and arguments. |
 | tags | array | Custom tags from configuration, e.g. `[ "Staging", "Priority" ]`. Can have multiple values. |
-| event.name | string | The name of the logged EventId, e.g. `ErrorProcessingCustomer`. |
+| event.action | string | The name of the logged EventId, e.g. `ErrorProcessingCustomer`. |
 | event.code | string | The numeric value (as a string) of the EventId, e.g. `5000`. |
 | event.severity | long | The syslog severity corresponding to the log level, 2 = critical, 3 = error, 4 = warning, 6 = information, 7 = debug and trace. (Also used in the Systemd format of ConsoleLoggerProvider) |
 | log.level | string | The log level: `Critical`, `Error`, `Warning`, `Information`, `Debug`, or `Trace`. |
