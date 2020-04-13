@@ -4,5 +4,10 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Essential.LoggerProvider.Elasticsearch\Essential.LoggerProvider.Elasticsearch.csproj" />
+      <ProjectReference Include="..\..\src\Essential.LoggerProvider.RollingFile\Essential.LoggerProvider.RollingFile.csproj" />
+    </ItemGroup>
+
 
 </Project>
