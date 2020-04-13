@@ -28,6 +28,22 @@ OpenTelemetry provides a single set of APIs, libraries, agents, and collector se
         .Start();
 
 
+## ASP.NET
+
+### ASP.NET 2.2
+
+ "Scopes": [
+      "[ConnectionId, 0HLUVG563JRK8]",
+      "[RequestId, 0HLUVG563JRK8:00000001], [RequestPath, /], [CorrelationId, ]",
+      "[ActionId, 35cb4b74-1bfc-476b-adbc-418f8aaf9308], [ActionName, /Index]"
+    ],
+
+### ASP.NET 3.1
+
+    "Scopes": [
+      "[RequestId, 0HLUVD9KBTGNA:0000000F], [RequestPath, /], [SpanId, |307d9bfc-41357bcd53a00574.], [TraceId, 307d9bfc-41357bcd53a00574], [ParentId, ]",
+      "[ActionId, 09faf975-5249-444a-9fbb-e313c503cf8d], [ActionName, /Index]"
+    ],
 
 ## Trace Context ##
 
