@@ -35,53 +35,72 @@ namespace HelloElasticsearch
             var rate = 0;
 
             Thread.CurrentPrincipal = new ClaimsPrincipal(new GenericIdentity("sgryphon+es@live.com"));
-            Trace.CorrelationManager.ActivityId = Guid.NewGuid();
 
-            using (_logger.BeginScope("IP address {ip}", ipAddress))
+            var activity = new Activity("Process-Customer");
+            activity.Start();
+
+            try
             {
-                try
+                using (_logger.BeginScope("IP address {ip}", ipAddress))
                 {
-                    using (_logger.BeginScope(new Dictionary<string, object> {["SecretToken"] = token}))
+                    var orderActivity = new Activity("Process-Order");
+                    orderActivity.Start();
+                    try
                     {
-                        Log.SignInToken(_logger, checksum, success, null);
+                        using (_logger.BeginScope(new Dictionary<string, object> {["SecretToken"] = token}))
+                        {
+                            Log.SignInToken(_logger, checksum, success, null);
+                        }
+
+                        using (_logger.BeginScope("Customer {CustomerId}, Order {OrderId}, Due {DueDate:yyyy-MM-dd}",
+                            customerId, orderId, dueDate))
+                        {
+                            Log.StartingProcessing(_logger, 4, null);
+                            var items = new List<Guid>();
+                            for (var i = 0; i < 4; i++)
+                            {
+                                var itemActivity = new Activity("Process-Item");
+                                itemActivity.Start();
+                                await Task.Delay(TimeSpan.FromMilliseconds(1000), stoppingToken)
+                                    .ConfigureAwait(false);
+                                var item = Guid.NewGuid();
+                                Log.ProcessOrderItem(_logger, item, null);
+                                items.Add(item);
+                                itemActivity.Stop();
+                            }
+
+                            using (_logger.BeginScope("{ItemsProcessed}", items))
+                            {
+                                _logger.LogWarning("End of processing reached at {EndTime}.", end);
+                                Log.WarningEndOfProcessing(_logger, end, null);
+                            }
+
+                            try
+                            {
+                                var points = total / rate;
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new Exception("Calculation error", ex);
+                            }
+                        }
                     }
-
-                    using (_logger.BeginScope("Customer {CustomerId}, Order {OrderId}, Due {DueDate:yyyy-MM-dd}",
-                        customerId, orderId, dueDate))
+                    catch (Exception ex)
                     {
-                        Log.StartingProcessing(_logger, 4, null);
-                        var items = new List<Guid>();
-                        for (var i = 0; i < 4; i++)
+                        using (_logger.BeginScope("PlainScope"))
                         {
-                            await Task.Delay(TimeSpan.FromMilliseconds(1000), stoppingToken).ConfigureAwait(false);
-                            var item = Guid.NewGuid();
-                            Log.ProcessOrderItem(_logger, item, null);
-                            items.Add(item);
+                            Log.ErrorProcessingCustomer(_logger, customerId, ex);
                         }
-
-                        using (_logger.BeginScope("{ItemsProcessed}", items))
-                        {
-                            _logger.LogWarning("End of processing reached at {EndTime}.", end);
-                            Log.WarningEndOfProcessing(_logger, end, null);
-                        }
-
-                        try
-                        {
-                            var points = total / rate;
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception("Calculation error", ex);
-                        }
+                    }
+                    finally
+                    {
+                        orderActivity.Stop();
                     }
                 }
-                catch (Exception ex)
-                {
-                    using (_logger.BeginScope("PlainScope"))
-                    {
-                        Log.ErrorProcessingCustomer(_logger, customerId, ex);
-                    }
-                }
+            }
+            finally
+            {
+                activity.Stop();
             }
 
             Log.CriticalErrorExecuteFailed(_logger, null);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -110,11 +111,15 @@ namespace Essential.LoggerProvider
                             if (kvp.Key == "{OriginalFormat}")
                             {
                                 isFormattedLogValues = true;
+                                continue;
                             }
-                            else
+
+                            if (CheckCorrelationValues(logEvent, kvp))
                             {
-                                logEvent.Labels[kvp.Key] = FormatValue(kvp.Value);
+                                continue;
                             }
+
+                            logEvent.Labels[kvp.Key] = FormatValue(kvp.Value);
                         }
                     }
 
@@ -140,11 +145,15 @@ namespace Essential.LoggerProvider
                         if (kvp.Key == "{OriginalFormat}")
                         {
                             logEvent.MessageTemplate = kvp.Value.ToString();
+                            continue;
                         }
-                        else
+
+                        if (CheckCorrelationValues(logEvent, kvp))
                         {
-                            logEvent.Labels[kvp.Key] = FormatValue(kvp.Value);
+                            continue;
                         }
+
+                        logEvent.Labels[kvp.Key] = FormatValue(kvp.Value);
                     }
                 }
             }
@@ -201,12 +210,6 @@ namespace Essential.LoggerProvider
                 };
             }
 
-            if (!Trace.CorrelationManager.ActivityId.Equals(Guid.Empty))
-            {
-                logEvent.Trace =
-                    new Elastic.CommonSchema.Trace() {Id = Trace.CorrelationManager.ActivityId.ToString()};
-            }
-
             if (_options.IncludeScopes)
             {
                 AddScopeValues(logEvent);
@@ -215,7 +218,112 @@ namespace Essential.LoggerProvider
             // These will overwrite any scope values with the same name
             AddStateValues(state, logEvent);
 
+            DefaultCorrelationValues(logEvent);
+
             return logEvent;
+        }
+
+        private bool CheckCorrelationValues(LogEvent logEvent, KeyValuePair<string, object> kvp)
+        {
+            // Unique identifier of the trace.
+            // A trace groups multiple events like transactions that belong together. For example, a user request handled by multiple inter-connected services.
+            if (((kvp.Key == "TraceId" || kvp.Key == "CorrelationId") && _options.MapCorrelationValues)
+                || kvp.Key == "trace.id")
+            {
+                var value = FormatValue(kvp.Value);
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    if (logEvent.Trace == null)
+                    {
+                        logEvent.Trace = new Elastic.CommonSchema.Trace();
+                    }
+
+                    logEvent.Trace.Id = value;
+                }
+
+                return true;
+            }
+
+            // Unique identifier of the transaction.
+            // A transaction is the highest level of work measured within a service, such as a request to a server.
+            if ((kvp.Key == "RequestId" && _options.MapCorrelationValues)
+                || kvp.Key == "transaction.id")
+            {
+                var value = FormatValue(kvp.Value);
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    if (logEvent.Transaction == null)
+                    {
+                        logEvent.Transaction = new Transaction();
+                    }
+
+                    logEvent.Transaction.Id = value;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void DefaultCorrelationValues(LogEvent logEvent)
+        {
+            // Shared, i.e. root, trace correlation
+            if (logEvent.Trace == null || string.IsNullOrEmpty(logEvent.Trace.Id))
+            {
+                var activity = Activity.Current;
+                if (!string.IsNullOrEmpty(activity?.Id))
+                {
+                    if (logEvent.Trace == null)
+                    {
+                        logEvent.Trace = new Elastic.CommonSchema.Trace();
+                    }
+
+                    logEvent.Trace.Id = activity?.RootId ?? activity?.Id;
+                }
+            }
+
+            if (logEvent.Trace == null || string.IsNullOrEmpty(logEvent.Trace.Id))
+            {
+                if (!Trace.CorrelationManager.ActivityId.Equals(Guid.Empty))
+                {
+                    if (logEvent.Trace == null)
+                    {
+                        logEvent.Trace = new Elastic.CommonSchema.Trace();
+                    }
+
+                    logEvent.Trace.Id = Trace.CorrelationManager.ActivityId.ToString();
+                }
+            }
+
+            // Individual, i.e. activity, transaction correlation
+            if (logEvent.Transaction == null || string.IsNullOrEmpty(logEvent.Transaction.Id))
+            {
+                var activity = Activity.Current;
+                if (!string.IsNullOrEmpty(activity?.Id))
+                {
+                    if (logEvent.Transaction == null)
+                    {
+                        logEvent.Transaction = new Transaction();
+                    }
+
+                    logEvent.Transaction.Id = activity?.Id;
+                }
+            }
+
+            if (logEvent.Transaction == null || string.IsNullOrEmpty(logEvent.Transaction.Id))
+            {
+                if (!Trace.CorrelationManager.ActivityId.Equals(Guid.Empty))
+                {
+                    if (logEvent.Transaction == null)
+                    {
+                        logEvent.Transaction = new Transaction();
+                    }
+                    
+
+                    logEvent.Transaction.Id = Trace.CorrelationManager.ActivityId.ToString();
+                }
+            }
         }
 
         private string FormatEnumerable(IEnumerable enumerable, int depth)
@@ -268,6 +376,8 @@ namespace Essential.LoggerProvider
         {
             switch (value)
             {
+                case null:
+                    return string.Empty;
                 case byte b:
                     return b.ToString("X2");
                 case byte[] bytes:

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Essential.LoggerProvider.Elasticsearch\Essential.LoggerProvider.Elasticsearch.csproj" />
+      <ProjectReference Include="..\..\src\Essential.LoggerProvider.RollingFile\Essential.LoggerProvider.RollingFile.csproj" />
+    </ItemGroup>
+
+
+</Project>

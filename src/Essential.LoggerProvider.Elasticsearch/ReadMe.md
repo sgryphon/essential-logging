@@ -89,6 +89,7 @@ The following default settings are used.
       "IndexOffset": null,
       "IsEnabled": true,
       "ListSeparator": ", ",
+      "MapCorrelationValues": true,
       "NodeUris": [ "http://localhost:9200" ],
       "Tags": []
     }
@@ -107,9 +108,9 @@ The following default settings are used.
 | IndexOffset | timespan | Override to set the offset used to generate the `index`. Default value is `null`, which uses the system local offset; use `"00:00"` for UTC.  |
 | IsEnabled | boolean | Default `true`; set to `false` to disable the logger. |
 | ListSeparator | string | Separator to use for `IEnumerable` in `labels.*` values. Default is `", "`. |
+| MapCorrelationValues | boolean | Maps keys (from ASP.NET) `TraceId` or `CorrelationId` to `trace.id`, and `RequestId` to `transaction.id`. Default `true`. |
 | NodeUris | array | URI(s) of the Elasticsearch nodes to connect to. Default is a single node `[ "http://localhost:9200" ]` |
 | Tags | array | Additional tags to include in the message. Useful to specify the environment or other details, e.g.  `[ "Staging", "Priority" ]` |
-
 
 If you want to configure from a different section, it can be configured manually:
 
@@ -134,9 +135,9 @@ The `_source` field is the message sent from the LoggerProvider, along with the 
 
 ```json
 {
-  "_index": "dotnet-2020.04.01",
+  "_index": "dotnet-2020.04.12",
   "_type": "_doc",
-  "_id": "b1f9c454-4562-4a37-a950-441dcda83f48",
+  "_id": "563503a8-9d10-46ff-a09f-c6ccbf124db9",
   "_version": 1,
   "_score": null,
   "_source": {
@@ -155,7 +156,7 @@ The `_source` field is the message sent from the LoggerProvider, along with the 
     "error": {
       "message": "Calculation error",
       "type": "System.Exception",
-      "stack_trace": "System.Exception: Calculation error\n ---> System.DivideByZeroException: Attempted to divide by zero.\n   at HelloElasticsearch.Worker.ExecuteAsync(CancellationToken stoppingToken) in /home/sly/Code/essential-logging/examples/HelloElasticsearch/Worker.cs:line 70\n   --- End of inner exception stack trace ---\n   at HelloElasticsearch.Worker.ExecuteAsync(CancellationToken stoppingToken) in /home/sly/Code/essential-logging/examples/HelloElasticsearch/Worker.cs:line 74"
+      "stack_trace": "System.Exception: Calculation error\n ---> System.DivideByZeroException: Attempted to divide by zero.\n   at HelloElasticsearch.Worker.ExecuteAsync(CancellationToken stoppingToken) in /home/sly/Code/essential-logging/examples/HelloElasticsearch/Worker.cs:line 80\n   --- End of inner exception stack trace ---\n   at HelloElasticsearch.Worker.ExecuteAsync(CancellationToken stoppingToken) in /home/sly/Code/essential-logging/examples/HelloElasticsearch/Worker.cs:line 84"
     },
     "event": {
       "code": "5000",
@@ -177,9 +178,9 @@ The `_source` field is the message sent from the LoggerProvider, along with the 
     },
     "process": {
       "thread": {
-        "id": 6
+        "id": 10
       },
-      "pid": 21054,
+      "pid": 25982,
       "name": "HelloElasticsearch"
     },
     "service": {
@@ -191,7 +192,7 @@ The `_source` field is the message sent from the LoggerProvider, along with the 
       "name": "sly",
       "domain": "VUB1804"
     },
-    "@timestamp": "2020-04-02T21:30:56.1351149+10:00",
+    "@timestamp": "2020-04-13T21:25:22.3352989+10:00",
     "tags": [
       "Development"
     ],
@@ -201,16 +202,19 @@ The `_source` field is the message sent from the LoggerProvider, along with the 
     },
     "message": "Unexpected error processing customer 12345.",
     "trace": {
-      "id": "380f61e2-c365-4c8c-96d9-1ccfb9ded562"
+      "id": "c20bde1071f7cf4e9a6f368c824e05f7"
+    },
+    "transaction": {
+      "id": "00-c20bde1071f7cf4e9a6f368c824e05f7-92ba5ee64d963746-00"
     }
   },
   "fields": {
     "@timestamp": [
-      "2020-04-02T11:30:56.135Z"
+      "2020-04-13T11:25:22.335Z"
     ]
   },
   "sort": [
-    1585827056135
+    1586777122335
   ]
 }
 ```
@@ -336,7 +340,19 @@ You are welcome to use the [`build.ps1`](../../build.ps1) script in this reposit
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| trace.id | string | Correlation identifier. Value, if not the empty Guid, of `CorrelationManager.ActivityId` from `System.Diagnostics`. |
+| trace.id | string | Cross-service trace correlation identifier. From message or scope value `trace.id`, or (if enabled) ASP.NET keys `TraceId` or `CorrelationId`; otherwise use `Activity.Current.RootId` from `System.Diagnostics`, `Activity.Current.Id`, or `CorrelationManager.ActivityId`. |
+| transaction.id | string | Transaction for this service, e.g. request. From message or scope value `transaction.id`, or (if enabled) ASP.NET key `RequestId`; otherwise use `Activity.Current.Id` from `System.Diagnostics`, or `CorrelationManager.ActivityId`. |
+
+ASP.NET will automatically pass correlation identifiers between tiers; from 3.0 it also supports the W3C Trace Context standard (https://www.w3.org/TR/trace-context/).
+
+The value of `Activity.Current.RootId` is used as the cross-service identifier (in W3C format this is the Trace ID), 
+and `Activity.Current.Id` is used for the transaction (in W3C format the full ID has both the Trace ID and the Span ID).
+
+To turn on W3C format, use:
+
+```c#
+Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+```
 
 ### Host fields
 
