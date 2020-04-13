@@ -43,6 +43,8 @@ namespace HelloElasticsearch
             {
                 using (_logger.BeginScope("IP address {ip}", ipAddress))
                 {
+                    var orderActivity = new Activity("Process-Order");
+                    orderActivity.Start();
                     try
                     {
                         using (_logger.BeginScope(new Dictionary<string, object> {["SecretToken"] = token}))
@@ -57,10 +59,14 @@ namespace HelloElasticsearch
                             var items = new List<Guid>();
                             for (var i = 0; i < 4; i++)
                             {
-                                await Task.Delay(TimeSpan.FromMilliseconds(1000), stoppingToken).ConfigureAwait(false);
+                                var itemActivity = new Activity("Process-Item");
+                                itemActivity.Start();
+                                await Task.Delay(TimeSpan.FromMilliseconds(1000), stoppingToken)
+                                    .ConfigureAwait(false);
                                 var item = Guid.NewGuid();
                                 Log.ProcessOrderItem(_logger, item, null);
                                 items.Add(item);
+                                itemActivity.Stop();
                             }
 
                             using (_logger.BeginScope("{ItemsProcessed}", items))
@@ -85,6 +91,10 @@ namespace HelloElasticsearch
                         {
                             Log.ErrorProcessingCustomer(_logger, customerId, ex);
                         }
+                    }
+                    finally
+                    {
+                        orderActivity.Stop();
                     }
                 }
             }

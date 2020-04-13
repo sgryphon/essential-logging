@@ -139,7 +139,9 @@ https://github.com/datalust/seq-extensions-logging
 * FormattableString, that allows substring, ellipses, uppercase, lowercase, etc
 * rename ColoredConsole to LoggerProvider, and implement (copy from ED initially)
 * formats to match existing, e.g. values for Systemd, ScopeLine (with newline at end), MessageLine, ExceptionLine
-* Elasticsearch provider, with examples, tests, etc. This needs a batching mechanism (similar to ED Seq)
+* Batching for Elasticsearch provider
+* Add activity tags / baggage for ES.
+* Map ASP.NET path, etc to ECS fields
 * Other providers -- database, 
 
 ## Jenkins
