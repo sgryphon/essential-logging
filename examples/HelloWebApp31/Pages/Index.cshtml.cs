@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
@@ -13,16 +14,15 @@ namespace HelloWebApp31.Pages
         {
             _logger = logger;
             _uptimeService = uptimeService;
-            
-            Id = Guid.NewGuid();
         }
         
-        public Guid Id { get; }
         public TimeSpan Uptime { get; set; }
 
         public void OnGet()
         {
-            Log.GetIndex(_logger, Id, null);
+            var activity = Activity.Current;
+            var context = this.HttpContext;
+            Log.GetIndex(_logger, activity?.Id, activity?.TraceId.ToString(), activity?.SpanId.ToString(), activity?.ParentId, activity?.RootId, context?.TraceIdentifier, null);
             Uptime = _uptimeService.GetUptime();
         }
     }

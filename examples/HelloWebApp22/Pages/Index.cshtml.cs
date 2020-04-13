@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,9 @@ namespace HelloWebApp22.Pages
 
         public void OnGet()
         {
-            Log.GetIndex(_logger, Id, null);
+            var activity = Activity.Current;
+            var context = this.HttpContext;
+            Log.GetIndex(_logger, Id, activity?.Id, activity?.ParentId, activity?.RootId, context?.TraceIdentifier, null);
             Uptime = _uptimeService.GetUptime();
         }
     }
