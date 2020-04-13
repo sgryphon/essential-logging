@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Essential.LoggerProvider;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +33,7 @@ namespace HelloElasticsearch
 
         public static async Task Main(string[] args)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             await CreateHostBuilder(args).Build().RunAsync();
         }
     }
