@@ -1,6 +1,6 @@
 ![Essential Logging](../../docs/images/diagnostics-logo-64.png)
 
-# HelloWebApp
+# HelloWebApp (.NET Core 3.1)
 
 This example is created from the ASP.NET Web App template, with the Rolling File and Elasticsearch loggers added, 
 along with an example singleton service and a few logger calls.
@@ -11,7 +11,7 @@ The example can be run from the console (which will use the Kestrel web server).
 (as well as a rolling file and to Elasticsearch):
 
 ```powershell
-dotnet run --project ./examples/HelloWebApp
+dotnet run --project ./examples/HelloWebApp31
 ```
 
 You can then view, or refresh, the home page (which will log the application-specific messages):

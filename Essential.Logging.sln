@@ -39,7 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essential.LoggerProvider.El
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloElasticsearch", "examples\HelloElasticsearch\HelloElasticsearch.csproj", "{2C8C0917-E139-4665-928C-37EE48C1F464}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWebApp", "examples\HelloWebApp\HelloWebApp.csproj", "{FCDD2A5C-D70F-4D44-9563-92E07A841056}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWebApp31", "examples\HelloWebApp31\HelloWebApp31.csproj", "{FCDD2A5C-D70F-4D44-9563-92E07A841056}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
