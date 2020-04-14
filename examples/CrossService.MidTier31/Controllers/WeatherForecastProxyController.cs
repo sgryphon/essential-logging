@@ -33,7 +33,7 @@ namespace CrossService.MidTier31.Controllers
                 Activity.Current.RootId);
 
             var jsonStream = await 
-                _httpClient.GetStreamAsync("http://localhost:5000/weatherforecast");
+                _httpClient.GetStreamAsync("http://localhost:5001/weatherforecast");
 
             var weatherForecast = await 
                 JsonSerializer.DeserializeAsync<IEnumerable<WeatherForecast>>(jsonStream);
