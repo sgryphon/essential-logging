@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace CrossService.Backend31
+namespace CrossService.MidTier31
 {
     public class Program
     {

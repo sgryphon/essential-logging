@@ -1,6 +1,6 @@
 using System;
 
-namespace CrossService.Backend31
+namespace CrossService.BackEnd31
 {
     public class WeatherForecast
     {
