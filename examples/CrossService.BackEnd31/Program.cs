@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Essential.LoggerProvider;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +9,7 @@ namespace CrossService.BackEnd31
     {
         public static void Main(string[] args)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             CreateHostBuilder(args).Build().Run();
         }
 
