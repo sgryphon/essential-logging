@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.Extensions.Logging;
 
 namespace CrossService.Backend31.Controllers
@@ -26,6 +28,11 @@ namespace CrossService.Backend31.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            _logger.LogInformation(2300,
+                "Id {ActId}, TraceId {ActTraceId}, SpanId {ActSpanId}, ParentId {ActParentId}, RootId {ActRootId}",
+                Activity.Current.Id, Activity.Current.TraceId, Activity.Current.SpanId, Activity.Current.ParentId,
+                Activity.Current.RootId);
+            
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
                 {
