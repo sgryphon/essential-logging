@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Elastic.CommonSchema;
 using Microsoft.Extensions.Logging;
@@ -16,6 +17,9 @@ namespace Essential.LoggerProvider
         private readonly string _categoryName;
         private readonly ElasticsearchDataProcessor _dataProcessor;
         private ElasticsearchLoggerOptions _options = default!;
+
+        private Regex w3cFormat = new Regex(@"^[abcdef]{2}-[\dabcdef]{32}-([\dabcdef]{16})-[\dabcdef]{2}$",
+            RegexOptions.Compiled);
 
         internal ElasticsearchLogger(string categoryName, ElasticsearchDataProcessor dataProcessor)
         {
@@ -114,7 +118,7 @@ namespace Essential.LoggerProvider
                                 continue;
                             }
 
-                            if (CheckCorrelationValues(logEvent, kvp))
+                            if (CheckTracingValues(logEvent, kvp))
                             {
                                 continue;
                             }
@@ -148,13 +152,38 @@ namespace Essential.LoggerProvider
                             continue;
                         }
 
-                        if (CheckCorrelationValues(logEvent, kvp))
+                        if (CheckTracingValues(logEvent, kvp))
                         {
                             continue;
                         }
 
                         logEvent.Labels[kvp.Key] = FormatValue(kvp.Value);
                     }
+                }
+            }
+        }
+
+        private void AddTracing(LogEvent logEvent)
+        {
+            var activity = Activity.Current;
+
+            if (activity != null)
+            {
+                // Unique identifier of the trace.
+                // A trace groups multiple events like transactions that belong together. For example, a user request handled by multiple inter-connected services.
+                logEvent.Trace = new Elastic.CommonSchema.Trace() {Id = activity.RootId};
+
+                // Unique identifier of the transaction.
+                // A transaction is the highest level of work measured within a service, such as a request to a server.
+                var spanId = ExtractW3cSpanIdFromActivityId(activity.Id);
+                logEvent.Transaction = new Transaction() {Id = spanId ?? activity.Id};
+            }
+            else
+            {
+                if (!Trace.CorrelationManager.ActivityId.Equals(Guid.Empty))
+                {
+                    logEvent.Trace =
+                        new Elastic.CommonSchema.Trace() {Id = Trace.CorrelationManager.ActivityId.ToString()};
                 }
             }
         }
@@ -210,6 +239,8 @@ namespace Essential.LoggerProvider
                 };
             }
 
+            AddTracing(logEvent);
+
             if (_options.IncludeScopes)
             {
                 AddScopeValues(logEvent);
@@ -218,17 +249,12 @@ namespace Essential.LoggerProvider
             // These will overwrite any scope values with the same name
             AddStateValues(state, logEvent);
 
-            DefaultCorrelationValues(logEvent);
-
             return logEvent;
         }
 
-        private bool CheckCorrelationValues(LogEvent logEvent, KeyValuePair<string, object> kvp)
+        private bool CheckTracingValues(LogEvent logEvent, KeyValuePair<string, object> kvp)
         {
-            // Unique identifier of the trace.
-            // A trace groups multiple events like transactions that belong together. For example, a user request handled by multiple inter-connected services.
-            if (((kvp.Key == "TraceId" || kvp.Key == "CorrelationId") && _options.MapCorrelationValues)
-                || kvp.Key == "trace.id")
+            if (kvp.Key == "trace.id")
             {
                 var value = FormatValue(kvp.Value);
                 if (!string.IsNullOrWhiteSpace(value))
@@ -244,10 +270,7 @@ namespace Essential.LoggerProvider
                 return true;
             }
 
-            // Unique identifier of the transaction.
-            // A transaction is the highest level of work measured within a service, such as a request to a server.
-            if ((kvp.Key == "RequestId" && _options.MapCorrelationValues)
-                || kvp.Key == "transaction.id")
+            if (kvp.Key == "transaction.id")
             {
                 var value = FormatValue(kvp.Value);
                 if (!string.IsNullOrWhiteSpace(value))
@@ -266,64 +289,34 @@ namespace Essential.LoggerProvider
             return false;
         }
 
-        private static void DefaultCorrelationValues(LogEvent logEvent)
+        private string? ExtractW3cSpanIdFromActivityId(string activityId)
         {
-            // Shared, i.e. root, trace correlation
-            if (logEvent.Trace == null || string.IsNullOrEmpty(logEvent.Trace.Id))
+            if (activityId.Length != 2 + 32 + 16 + 2 + 3)
             {
-                var activity = Activity.Current;
-                if (!string.IsNullOrEmpty(activity?.Id))
-                {
-                    if (logEvent.Trace == null)
-                    {
-                        logEvent.Trace = new Elastic.CommonSchema.Trace();
-                    }
+                return null;
+            }
 
-                    logEvent.Trace.Id = activity?.RootId ?? activity?.Id;
+            // validate format
+            for (var index = 0; index < activityId.Length; index++)
+            {
+                var c = activityId[index];
+                if (index == 2 || index == 2 + 1 + 32 || index == 2 + 1 + 32 + 1 + 16)
+                {
+                    if (c != '-')
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    if (c < '0' || c > 'f' || (c > '9' && c < 'a'))
+                    {
+                        return null;
+                    }
                 }
             }
 
-            if (logEvent.Trace == null || string.IsNullOrEmpty(logEvent.Trace.Id))
-            {
-                if (!Trace.CorrelationManager.ActivityId.Equals(Guid.Empty))
-                {
-                    if (logEvent.Trace == null)
-                    {
-                        logEvent.Trace = new Elastic.CommonSchema.Trace();
-                    }
-
-                    logEvent.Trace.Id = Trace.CorrelationManager.ActivityId.ToString();
-                }
-            }
-
-            // Individual, i.e. activity, transaction correlation
-            if (logEvent.Transaction == null || string.IsNullOrEmpty(logEvent.Transaction.Id))
-            {
-                var activity = Activity.Current;
-                if (!string.IsNullOrEmpty(activity?.Id))
-                {
-                    if (logEvent.Transaction == null)
-                    {
-                        logEvent.Transaction = new Transaction();
-                    }
-
-                    logEvent.Transaction.Id = activity?.Id;
-                }
-            }
-
-            if (logEvent.Transaction == null || string.IsNullOrEmpty(logEvent.Transaction.Id))
-            {
-                if (!Trace.CorrelationManager.ActivityId.Equals(Guid.Empty))
-                {
-                    if (logEvent.Transaction == null)
-                    {
-                        logEvent.Transaction = new Transaction();
-                    }
-                    
-
-                    logEvent.Transaction.Id = Trace.CorrelationManager.ActivityId.ToString();
-                }
-            }
+            return activityId.Substring(2 + 1 + 32 + 1, 16);
         }
 
         private string FormatEnumerable(IEnumerable enumerable, int depth)

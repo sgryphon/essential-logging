@@ -15,7 +15,7 @@ of prerequesites that you will need to meet, such as enough file handles; the el
 The provided Docker compose will create two nodes, one for Elasticsearch, and one for Kibana:
 
 ```powershell
-sudo docker-compose -f examples/HelloElasticsearch/docker/docker-compose.yml up
+sudo docker-compose -f examples/HelloElasticsearch/docker-compose.yml up
 ```
 
 Then in another console, run the HelloElasticsearch example:
@@ -53,7 +53,7 @@ dotnet run --project ./examples/HelloElasticsearch -- --Environment Minimal
 You can stop the container with `^C`. You can start it again, running in the background, with:
 
 ```powershell
-sudo docker-compose -f examples/HelloElasticsearch/docker/docker-compose.yml start
+sudo docker-compose -f examples/HelloElasticsearch/docker-compose.yml start
 ```
 
 ## Configuration
