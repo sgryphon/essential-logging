@@ -6,10 +6,11 @@ using Microsoft.Extensions.Hosting;
 
 namespace DiagnosticSource.App5
 {
-    class Program
+    internal class Program
     {
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .UseConsoleLifetime()
                 .ConfigureAppConfiguration((hostContext, configurationBuilder) =>
                 {
@@ -19,6 +20,7 @@ namespace DiagnosticSource.App5
                 {
                     services.AddHostedService<AppService>();
                 });
+        }
 
         public static async Task Main(string[] args)
         {
