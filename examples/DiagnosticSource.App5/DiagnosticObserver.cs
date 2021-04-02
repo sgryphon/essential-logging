@@ -11,7 +11,7 @@ namespace DiagnosticSource.App5
         {
             _next = next;
         }
-        
+
         public void OnCompleted()
         {
             //throw new NotImplementedException();
@@ -22,6 +22,9 @@ namespace DiagnosticSource.App5
             //throw new NotImplementedException();
         }
 
-        public void OnNext(DiagnosticListener value) => _next?.Invoke(value);
+        public void OnNext(DiagnosticListener value)
+        {
+            _next?.Invoke(value);
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace DiagnosticSource.App5
 
         public void OnCompleted()
         {
-           //throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void OnError(Exception error)
@@ -22,6 +22,9 @@ namespace DiagnosticSource.App5
             //throw new NotImplementedException();
         }
 
-        public void OnNext(KeyValuePair<string, object?> value) => _next?.Invoke(value);
+        public void OnNext(KeyValuePair<string, object?> value)
+        {
+            _next?.Invoke(value);
+        }
     }
 }

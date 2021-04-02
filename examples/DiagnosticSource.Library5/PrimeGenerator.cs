@@ -34,6 +34,8 @@ namespace DiagnosticSource.Library5
                     _diagnosticSource.Write("InitialiseList", new {GeneratorId = _generatorId});
                 }
 
+                _diagnosticSource.Write("FoundPrime",
+                    new NextPrimeDiagnostic {Index = _primes.Count, Value = 2});
                 _primes.Add(2);
                 nextPrime = 3;
             }

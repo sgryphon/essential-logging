@@ -7,25 +7,34 @@ using Microsoft.Extensions.Logging;
 
 namespace DiagnosticSource.App5
 {
+    /// <summary>
+    ///     Consumes the diagnostic events from the library and logs them
+    /// </summary>
     public class LibraryDiagnosticService : BackgroundService
     {
-        private readonly ILogger<LibraryDiagnosticService> _logger;
-        IDisposable? _keyValueSubscription;
-        readonly object _keyValueSubscriptionLock = new object();
+        private IDisposable? _keyValueSubscription;
+        private readonly object _keyValueSubscriptionLock = new();
         private IDisposable? _listenerSubscription;
+        private readonly ILogger<LibraryDiagnosticService> _logger;
 
         public LibraryDiagnosticService(ILogger<LibraryDiagnosticService> logger)
         {
             _logger = logger;
         }
-        
+
+        public override void Dispose()
+        {
+            _keyValueSubscription?.Dispose();
+            _listenerSubscription?.Dispose();
+        }
+
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             Log.LibraryDiagnosticServiceStarted(_logger, null);
             StartInstrumentation();
             return Task.CompletedTask;
         }
-        
+
         private void StartInstrumentation()
         {
             _listenerSubscription = DiagnosticListener.AllListeners.Subscribe(
@@ -51,6 +60,5 @@ namespace DiagnosticSource.App5
                     }
                 }));
         }
-
     }
 }
