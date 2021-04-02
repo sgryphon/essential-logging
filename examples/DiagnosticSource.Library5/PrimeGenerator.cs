@@ -14,8 +14,16 @@ namespace DiagnosticSource.Library5
 
         public IList<int> GeneratePrimes(int n)
         {
-            // TODO: Activity support
-            //_diagnosticSource.StartActivity(Activity.Current)
+            var startingLength = _primes.Count;
+
+            var activity = default(Activity);
+            if (_diagnosticSource.IsEnabled("GeneratePrimes"))
+            {
+                activity = new Activity("GeneratePrimes");
+                _diagnosticSource.StartActivity(activity,
+                    new {GeneratorId = _generatorId, Count = n, StartingLength = startingLength});
+            }
+
             if (n <= 0)
             {
                 if (_diagnosticSource.IsEnabled("EmptyRequest"))
@@ -25,8 +33,6 @@ namespace DiagnosticSource.Library5
 
                 return new int[0];
             }
-
-            var startingLength = _primes.Count;
 
             int nextPrime;
             if (_primes.Count == 0)
@@ -80,6 +86,11 @@ namespace DiagnosticSource.Library5
 
             var result = new int[n];
             _primes.CopyTo(startingLength, result, 0, n);
+
+            if (_diagnosticSource.IsEnabled("GeneratePrimes"))
+            {
+                _diagnosticSource.StopActivity(activity!, null);
+            }
 
             return result;
         }

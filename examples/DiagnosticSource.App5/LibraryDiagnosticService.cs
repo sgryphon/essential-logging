@@ -49,9 +49,21 @@ namespace DiagnosticSource.App5
                             _keyValueSubscription.Dispose();
                         }
 
-                        _keyValueSubscription = listener.Subscribe(keyValuePair =>
+                        _keyValueSubscription = listener.Subscribe(kvp =>
                         {
-                            Log.DiagnosticReceived(_logger, keyValuePair.Key, keyValuePair.Value, null);
+                            if (kvp.Key.EndsWith("Start", StringComparison.Ordinal))
+                            {
+                                Log.DiagnosticStart(_logger, Activity.Current!.OperationName, kvp.Value, null);
+                            }
+                            else if (kvp.Key.EndsWith("Stop", StringComparison.Ordinal))
+                            {
+                                Log.DiagnosticStop(_logger, Activity.Current!.OperationName,
+                                    Activity.Current!.Duration, null);
+                            }
+                            else
+                            {
+                                Log.DiagnosticReceived(_logger, kvp.Key, kvp.Value, null);
+                            }
                         });
                     }
                 }

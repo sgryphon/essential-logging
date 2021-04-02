@@ -26,6 +26,16 @@ namespace DiagnosticSource.App5
                 new EventId(2900, nameof(DiagnosticReceived)),
                 "Diagnostic {Key}: {Value}");
 
+        public static readonly Action<ILogger, string, object?, Exception?> DiagnosticStart =
+            LoggerMessage.Define<string, object?>(LogLevel.Information,
+                new EventId(2901, nameof(DiagnosticStart)),
+                "Diagnostic Activity {OperationName} Start: {Value}");
+        
+        public static readonly Action<ILogger, string, TimeSpan, Exception?> DiagnosticStop =
+            LoggerMessage.Define<string, TimeSpan>(LogLevel.Information,
+                new EventId(2902, nameof(DiagnosticStop)),
+                "Diagnostic Activity {OperationName} Stop, duration {Duration}");
+
         public static readonly Action<ILogger, Exception?> ApplicationStopping =
             LoggerMessage.Define(LogLevel.Information,
                 new EventId(8000, nameof(ApplicationStopping)),

@@ -27,6 +27,7 @@ namespace DiagnosticSource.App5
             Console.WriteLine(
                 "Generating primes, before diagnostics has had time to initialise, and no other listeners");
             var primeGenerator1 = new PrimeGenerator();
+            _ = primeGenerator1.GeneratePrimes(50);
             var list1 = primeGenerator1.GeneratePrimes(3);
             Console.WriteLine(string.Join(",", list1));
 
