@@ -14,6 +14,8 @@ namespace DiagnosticSource.Library5
 
         public IList<int> GeneratePrimes(int n)
         {
+            // TODO: Activity support
+            //_diagnosticSource.StartActivity(Activity.Current)
             if (n <= 0)
             {
                 if (_diagnosticSource.IsEnabled("EmptyRequest"))

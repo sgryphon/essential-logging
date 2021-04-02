@@ -18,5 +18,6 @@ where you still want diagnostics.
 dotnet run --project examples/DiagnosticSource.App5
 ```
 
-See: [https://github.com/dotnet/runtime/blob/main/src/libraries/System.Diagnostics.DiagnosticSource/src/DiagnosticSourceUsersGuide.md]()
-
+See:
+* [Diagnostic Source Users Guide](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Diagnostics.DiagnosticSource/src/DiagnosticSourceUsersGuide.md)
+* [Activity Users Guide](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Diagnostics.DiagnosticSource/src/ActivityUserGuide.md)
