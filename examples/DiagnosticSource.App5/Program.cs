@@ -19,6 +19,7 @@ namespace DiagnosticSource.App5
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<AppService>();
+                    services.AddHostedService<LibraryDiagnosticService>();
                 });
         }
 

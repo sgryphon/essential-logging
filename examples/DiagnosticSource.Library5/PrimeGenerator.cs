@@ -9,7 +9,7 @@ namespace DiagnosticSource.Library5
         private readonly System.Diagnostics.DiagnosticSource _diagnosticSource =
             new DiagnosticListener("DiagnosticSource.Library5");
 
-        private readonly Guid _generatorId = new();
+        private readonly Guid _generatorId = Guid.NewGuid();
         private readonly List<int> _primes = new();
 
         public IList<int> GeneratePrimes(int n)
