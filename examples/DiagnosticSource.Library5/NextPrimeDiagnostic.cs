@@ -4,5 +4,10 @@
     {
         public int Index { get; set; }
         public int Value { get; set; }
+
+        public override string ToString()
+        {
+            return $"Prime[{Index}]={Value}";
+        }
     }
 }
