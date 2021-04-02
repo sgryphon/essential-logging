@@ -37,28 +37,25 @@ namespace DiagnosticSource.App5
 
         private void StartInstrumentation()
         {
-            _listenerSubscription = DiagnosticListener.AllListeners.Subscribe(
-                new DiagnosticObserver(listener =>
+            _listenerSubscription = DiagnosticListener.AllListeners.Subscribe(listener =>
+            {
+                if (listener.Name == "DiagnosticSource.Library5")
                 {
-                    if (listener.Name == "DiagnosticSource.Library5")
+                    lock (_keyValueSubscriptionLock)
                     {
-                        lock (_keyValueSubscriptionLock)
+                        if (_keyValueSubscription != null)
                         {
-                            if (_keyValueSubscription != null)
-                            {
-                                Log.KeyValueListenerReplaced(_logger, null);
-                                _keyValueSubscription.Dispose();
-                            }
-
-                            _keyValueSubscription = listener.Subscribe(
-                                new KeyValueObserver(keyValuePair =>
-                                {
-                                    Log.DiagnosticReceived(_logger, keyValuePair.Key, keyValuePair.Value, null);
-                                })
-                            );
+                            Log.KeyValueListenerReplaced(_logger, null);
+                            _keyValueSubscription.Dispose();
                         }
+
+                        _keyValueSubscription = listener.Subscribe(keyValuePair =>
+                        {
+                            Log.DiagnosticReceived(_logger, keyValuePair.Key, keyValuePair.Value, null);
+                        });
                     }
-                }));
+                }
+            });
         }
     }
 }
