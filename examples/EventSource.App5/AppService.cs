@@ -44,6 +44,7 @@ namespace EventSource.App5
                 Console.WriteLine("Generating primes");
                 var list2 = primeGenerator1.GeneratePrimes(3);
                 Console.WriteLine(string.Join(",", list2));
+                _ = primeGenerator1.GeneratePrimes(0);
 
                 await Task.Delay(500, stoppingToken);
                 Console.WriteLine();

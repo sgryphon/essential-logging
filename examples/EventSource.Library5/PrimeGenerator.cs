@@ -69,7 +69,7 @@ namespace EventSource.Library5
             }
 
             if (PrimerGeneratorEventSource.Log.IsEnabled())
-                PrimerGeneratorEventSource.Log.CopyResult(n);
+                PrimerGeneratorEventSource.Log.CopyResult();
 
             var result = new int[n];
             _primes.CopyTo(startingLength, result, 0, n);

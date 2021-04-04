@@ -17,11 +17,11 @@ namespace EventSource.Library5
             Level=EventLevel.Informational, ActivityOptions=EventActivityOptions.None)]
         public void GeneratePrimesStopping() { WriteEvent(2902); }
         
-        [Event(2903, Message="Empty request", 
+        [Event(2903, 
             Keywords=Keywords.Generator|Keywords.Overhead, Level=EventLevel.Verbose)]
         public void EmptyRequest() { WriteEvent(2903);}
         
-        [Event(2904, Message="Initialising prime list for generator {0}",
+        [Event(2904,
             Keywords=Keywords.Generator|Keywords.Overhead, Level=EventLevel.Verbose)]
         public void InitialiseList(Guid generatorId) { WriteEvent(2904, generatorId);}
         
@@ -29,9 +29,9 @@ namespace EventSource.Library5
             Keywords=Keywords.Generator, Level=EventLevel.Verbose)]
         public void FoundPrime(int index, int value) { WriteEvent(2905, index, value);}
         
-        [Event(2906, Message="Copying result with {0} items", 
+        [Event(2906, Message="Copying result", 
             Keywords=Keywords.Generator|Keywords.Overhead, Level=EventLevel.Verbose)]
-        public void CopyResult(int resultLength) { WriteEvent(2906, resultLength);}
+        public void CopyResult() { WriteEvent(2906);}
         
         public static PrimerGeneratorEventSource Log = new PrimerGeneratorEventSource();
 

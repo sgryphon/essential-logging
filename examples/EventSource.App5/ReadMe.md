@@ -32,6 +32,11 @@ logger, and dependency injection, or can be included in a
 component that is intended to be used with dependency injection
 (that will have an ILogger).
 
+Note that the code to forward the EventSource back to ILogger
+is rather inefficient, to get some nice output. It would be 
+more common to pass events the other way (and there is
+a built in EventSourceLoggerProvider that can do this).
+
 *Running the example*
 
 To run the example app:
@@ -39,6 +44,9 @@ To run the example app:
 ```pwsh
 dotnet run --project examples/EventSource.App5
 ```
+
+// TODO: Provide instructions how to listen using dotnet-trace
+
 
 See:
 * [Event Source Users Guide](https://github.com/microsoft/dotnet-samples/blob/master/Microsoft.Diagnostics.Tracing/EventSource/docs/EventSource.md)
