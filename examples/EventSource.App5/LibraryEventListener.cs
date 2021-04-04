@@ -23,7 +23,7 @@ namespace EventSource.App5
         protected override void OnEventWritten(EventWrittenEventArgs eventData)
         {
             _logger.Log(Map(eventData.Level), new EventId(eventData.EventId, eventData.EventName),
-                "Task {0}, Opcode {1}, Keywords {2}, Activity {3}, Message {4], PayloadNames {5}, Payload {6}",
+                "Task {0}, Opcode {1}, Keywords {2}, Activity {3}, Message [{4}], PayloadNames [{5}], Payload [{6}]",
                 eventData.Task, eventData.Opcode, eventData.Keywords, eventData.ActivityId,
                 eventData.Message, eventData.PayloadNames, eventData.Payload);
         }

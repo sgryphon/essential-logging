@@ -11,7 +11,7 @@ namespace EventSource.Library5
         public void GeneratePrimesStarted(Guid generatorId, int count, int startingLength) { WriteEvent(2901, generatorId, count, startingLength);}
 
         [Event(2902, Keywords = EventKeywords.None, Task=Task.GeneratePrimes, Opcode=EventOpcode.Stop, Level=EventLevel.Informational, ActivityOptions = EventActivityOptions.None)]
-        public void GeneratePrimesStopping() { WriteEvent(2902);}
+        public void GeneratePrimesStopping() { WriteEvent(2902); }
         
         [Event(2903, Keywords = Keywords.Generator|Keywords.Overhead, Level=EventLevel.Verbose)]
         public void EmptyRequest() { WriteEvent(2903);}
