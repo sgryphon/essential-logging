@@ -10,10 +10,15 @@ namespace EventSource.App5
                 new EventId(1000, nameof(AppServiceStarted)),
                 "App service started");
 
-        public static readonly Action<ILogger, Exception?> KeyValueListenerReplaced =
+        public static readonly Action<ILogger, Exception?> StartListeningToLibrary =
             LoggerMessage.Define(LogLevel.Information,
-                new EventId(1901, nameof(KeyValueListenerReplaced)),
-                "New key value listener for DiagnosticSource.Library5 is replacing existing listener");
+                new EventId(1901, nameof(StartListeningToLibrary)),
+                "Listening to library event source");
+
+        public static readonly Action<ILogger, string?, Exception?> IgnoringEventSource =
+            LoggerMessage.Define<string?>(LogLevel.Debug,
+                new EventId(1902, nameof(IgnoringEventSource)),
+                "Ignoring event source {EventSourceName}");
 
         public static readonly Action<ILogger, Exception?> LibraryDiagnosticServiceStarted =
             LoggerMessage.Define(LogLevel.Information,
