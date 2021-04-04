@@ -47,6 +47,7 @@ dotnet run --project examples/EventSource.App5
 
 // TODO: Provide instructions how to listen using dotnet-trace
 
+// TODO: Add event counters
 
 See:
 * [Event Source Users Guide](https://github.com/microsoft/dotnet-samples/blob/master/Microsoft.Diagnostics.Tracing/EventSource/docs/EventSource.md)
