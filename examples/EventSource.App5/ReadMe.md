@@ -47,18 +47,14 @@ dotnet run --project examples/EventSource.App5
 
 *Using `dotnet-trace` tool*
 
+Note: You may need to install the tools; use `dotnet tool restore`.
+
 Run the program in one terminal (see command above), and wait where it asks to press Enter.
 
-In a second terminal, find the process:
+In a second terminal, start collecting a trace, then press Enter in the first terminal to continue.
 
 ```pwsh
-dotnet trace ps
-```
-
-Start collecting a trace, then press Enter in the first terminal to continue.
-
-```pwsh
-dotnet trace collect --process-id 2069110 
+dotnet trace collect --name EventSource.App5 
 ```
 
 The output can be converted to Speedscope format:
@@ -72,7 +68,17 @@ add `--providers EventSource-Library-PrimeGenerator`, then the file is empty.
 
 *Event counters*
 
-// TODO: Add event counters
+Run the program in one terminal (see command above), and wait where it asks to press Enter.
+
+In a second terminal, monitor the counters:
+
+```pwsh
+dotnet counters monitor --name EventSource.App5 --counters EventSource-Library-PrimeGenerator
+```
+
+Then press Enter in the first terminal to generate some primes and watch the counter change.
+
+
 
 *More information*
 

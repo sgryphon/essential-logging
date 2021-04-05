@@ -7,6 +7,13 @@ namespace EventSource.Library5
     [EventSource(Name="EventSource-Library-PrimeGenerator")]
     public sealed class PrimerGeneratorEventSource : System.Diagnostics.Tracing.EventSource
     {
+        private readonly IncrementingEventCounter _primesGeneratedCounter;
+        
+        public PrimerGeneratorEventSource()
+        {
+            _primesGeneratedCounter = new IncrementingEventCounter("primes-generated", this);
+        }
+        
         [Event(2901, Message="Generate primes started. Generator {0}, Count {1}, Starting Length {2}",
             Keywords=EventKeywords.None, Task=Task.GeneratePrimes, Opcode=EventOpcode.Start, 
             Level=EventLevel.Informational, ActivityOptions=EventActivityOptions.None)]
@@ -24,10 +31,14 @@ namespace EventSource.Library5
         [Event(2904,
             Keywords=Keywords.Generator|Keywords.Overhead, Level=EventLevel.Verbose)]
         public void InitialiseList(Guid generatorId) { WriteEvent(2904, generatorId);}
-        
-        [Event(2905, Message="Found prime {0}: {1}",
-            Keywords=Keywords.Generator, Level=EventLevel.Verbose)]
-        public void FoundPrime(int index, int value) { WriteEvent(2905, index, value);}
+
+        [Event(2905, Message = "Found prime {0}: {1}",
+            Keywords = Keywords.Generator, Level = EventLevel.Verbose)]
+        public void FoundPrime(int index, int value)
+        {
+            WriteEvent(2905, index, value);
+            _primesGeneratedCounter.Increment();
+        }
         
         [Event(2906, Message="Copying result", 
             Keywords=Keywords.Generator|Keywords.Overhead, Level=EventLevel.Verbose)]
