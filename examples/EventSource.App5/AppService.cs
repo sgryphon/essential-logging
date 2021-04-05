@@ -58,6 +58,11 @@ namespace EventSource.App5
                 Console.WriteLine("From original generator");
                 var list4 = primeGenerator1.GeneratePrimes(3);
                 Console.WriteLine(string.Join(",", list4));
+
+                await Task.Delay(500, stoppingToken);
+                Console.WriteLine();
+                Console.WriteLine("Press Enter to finish");
+                Console.ReadLine();
             }
             catch (Exception ex)
             {

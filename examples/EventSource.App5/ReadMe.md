@@ -45,9 +45,36 @@ To run the example app:
 dotnet run --project examples/EventSource.App5
 ```
 
-// TODO: Provide instructions how to listen using dotnet-trace
+*Using `dotnet-trace` tool*
+
+Run the program in one terminal (see command above), and wait where it asks to press Enter.
+
+In a second terminal, find the process:
+
+```pwsh
+dotnet trace ps
+```
+
+Start collecting a trace, then press Enter in the first terminal to continue.
+
+```pwsh
+dotnet trace collect --process-id 2069110 
+```
+
+The output can be converted to Speedscope format:
+
+```pwsh
+dotnet trace convert --format Speedscope 
+```
+
+Note: The custom event source is not in the Speedscope output, and if you 
+add `--providers EventSource-Library-PrimeGenerator`, then the file is empty.
+
+*Event counters*
 
 // TODO: Add event counters
+
+*More information*
 
 See:
 * [Event Source Users Guide](https://github.com/microsoft/dotnet-samples/blob/master/Microsoft.Diagnostics.Tracing/EventSource/docs/EventSource.md)

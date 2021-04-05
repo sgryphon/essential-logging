@@ -7,6 +7,12 @@
       "commands": [
         "dotnet-gitversion"
       ]
+    },
+    "dotnet-trace": {
+      "version": "5.0.217401",
+      "commands": [
+        "dotnet-trace"
+      ]
     }
   }
 }
