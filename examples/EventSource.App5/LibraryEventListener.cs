@@ -46,7 +46,7 @@ namespace EventSource.App5
                 {
                     _logger.Log(Map(eventData.Level), new EventId(eventData.EventId, eventData.EventName),
                         string.Concat(eventData.PayloadNames.Select(x => $"[{x} {{{x}}}]")),
-                        "{0}", eventData.Payload);
+                        eventData.Payload!.ToArray());
                 }
             }
             else
@@ -62,9 +62,9 @@ namespace EventSource.App5
             {
                 case EventLevel.LogAlways: return LogLevel.Critical;
                 case EventLevel.Critical: return LogLevel.Critical;
-                case EventLevel.Error: return LogLevel.Critical;
-                case EventLevel.Warning: return LogLevel.Critical;
-                case EventLevel.Informational: return LogLevel.Critical;
+                case EventLevel.Error: return LogLevel.Error;
+                case EventLevel.Warning: return LogLevel.Warning;
+                case EventLevel.Informational: return LogLevel.Information;
                 case EventLevel.Verbose: return LogLevel.Debug;
                 default: return LogLevel.Trace;
             }
