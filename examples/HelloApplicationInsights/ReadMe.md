@@ -2,6 +2,8 @@
 
 # HelloApplicationInsights
 
+Azure Monitor / Azure Log Analytics Workspace / Application Insights example.
+
 ## Running the Example
 
 Pre-requisites:
@@ -30,7 +32,7 @@ are (mostly) idempotent, so you can re-run the scripts as needed.
 Then run the HelloApplicationInsights example in a console:
 
 ```powershell
-dotnet run --project ./examples/HelloApplicationInsights
+dotnet run --project ./examples/HelloApplicationInsights -- --Environment Development
 ```
 
 Open the Log Analytics Workspace in Azure, and you can use a query similar
@@ -38,14 +40,25 @@ to the following:
 
 ```
 union AppTraces, AppExceptions
-| where TimeGenerated > ago(1h)
-| where Properties.CategoryName !startswith 'Microsoft.Extensions'
+| where TimeGenerated > ago(2h)
 | order by TimeGenerated desc
-| project TimeGenerated, Message, SeverityLevel, OperationId, AppRoleInstance, AppVersion, Properties.CategoryName, Properties
+| project TimeGenerated, Type, coalesce(Message, Properties['FormattedMessage'], ProblemId), SeverityLevel, OperationId, AppRoleName, AppVersion, AppRoleInstance, UserAuthenticatedId,ClientStateOrProvince, Properties['CategoryName'], Properties['EventId'], Properties
 ```
 
+**Example output: Azure Log Analytics Workspace** 
 
-**Example output: Elasticsearch via Kibana** 
+![Example - Azure Log Analytics](../../docs/images/example-azure-log-analytics.png)
+
 
 ## Configuration
+
+You should use `ConnectionString` instead of just `ApiKey` in your `ApplicationInsights` configuration settings.
+
+Setting `DeveloperMode` to `True` in your Development environment disables buffering, which means the log messages will be seen earlier.
+
+If you log is a bit empty, you may also want to set `Logging.ApplicationInsights.LogLevel.Default` to be able to see Debug messages. (Generally Trace level messages may contain sensitive information and should not be logged.)
+
+
+
+
 

@@ -11,6 +11,6 @@ $ai = az monitor app-insights component create `
 
 # copy the key into another variable, to ensure the property is dereferenced when passing to
 # the az command line
-$aiKey = $ai.instrumentationKey
+$connectionString = $ai.connectionString
 
-Write-Verbose "Client App Instrumentation key: $aiKey"
+Write-Verbose "App Insights connection string: $connectionString"
