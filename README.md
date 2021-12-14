@@ -10,7 +10,7 @@ Guidance, links, utilities, and additional logger providers for .NET `Microsoft.
 
 * PS> **dotnet add package [Essential.LoggerProvider.RollingFile](src/Essential.LoggerProvider.RollingFile)**
 * PS> **dotnet add package [Syslog.StructuredData](https://github.com/sgryphon/syslog-structureddata)**
-* PS> **dotnet add package [Elasticsearch.Extensions.Logging](/elastic/ecs-dotnet/blob/master/src/Elasticsearch.Extensions.Logging) --version 1.6.0-alpha1**
+* PS> **dotnet add package [Elasticsearch.Extensions.Logging](https://github.com/elastic/ecs-dotnet/blob/master/src/Elasticsearch.Extensions.Logging) --version 1.6.0-alpha1**
 
 ### Examples
 
@@ -22,7 +22,7 @@ General `Microsoft.Extensions.Logging`:
 Essential logging `Essential.LoggerProvider`:
 
 * [Hello Rolling File](examples/HelloRollingFile)
-* [Hello Elasticsearch](/elastic/ecs-dotnet/tree/master/examples/console-with-extensions-logging)
+* [Hello Elasticsearch](https://github.com/elastic/ecs-dotnet/tree/master/examples/console-with-extensions-logging)
 
 ### Guidance
 
