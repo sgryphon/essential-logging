@@ -1,5 +1,16 @@
 ![Essential Logging](../../docs/images/diagnostics-logo-64.png)
 
+**Note: The Elasticsearch logger provider has been moved to the ECS DotNet project.**
+
+Find the latest version here:
+https://github.com/elastic/ecs-dotnet/blob/master/src/Elasticsearch.Extensions.Logging/ReadMe.md
+
+The nuget package is here:
+https://www.nuget.org/packages/Elasticsearch.Extensions.Logging/1.6.0-alpha1
+
+<details>
+    <summary>Original readme</summary>
+
 # ElasticsearchLoggerProvider
 
 Elasticsearch-Logstash-Kibana (ELK) stack logger provider for Microsoft.Extensions.Logging.
@@ -385,3 +396,6 @@ NOTE: Can be disabled via configuration.
 | user.domain | string | The current domain, either the machine name or a Windows domain. Value of `Environment.UserDomainName`. |
 | user.id | string | Current user principal name, if set. Value of `Thread.CurrentPrincipal.Identity.Name`. |
 | user.name | string | The current user. Value of `Environment.UserName`. |
+
+</details>
+    
