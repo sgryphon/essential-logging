@@ -8,9 +8,9 @@ Guidance, links, utilities, and additional logger providers for .NET `Microsoft.
 
 ### Logger providers
 
-* PS> **dotnet add package [Essential.LoggerProvider.Elasticsearch](src/Essential.LoggerProvider.Elasticsearch)**
 * PS> **dotnet add package [Essential.LoggerProvider.RollingFile](src/Essential.LoggerProvider.RollingFile)**
 * PS> **dotnet add package [Syslog.StructuredData](https://github.com/sgryphon/syslog-structureddata)**
+* PS> **dotnet add package [Elasticsearch.Extensions.Logging](/elastic/ecs-dotnet/blob/master/src/Elasticsearch.Extensions.Logging) --version 1.6.0-alpha1**
 
 ### Examples
 
@@ -22,7 +22,7 @@ General `Microsoft.Extensions.Logging`:
 Essential logging `Essential.LoggerProvider`:
 
 * [Hello Rolling File](examples/HelloRollingFile)
-* [Hello Elasticsearch](examples/HelloElasticsearch)
+* [Hello Elasticsearch](/elastic/ecs-dotnet/tree/master/examples/console-with-extensions-logging)
 
 ### Guidance
 
@@ -139,7 +139,6 @@ https://github.com/datalust/seq-extensions-logging
 * FormattableString, that allows substring, ellipses, uppercase, lowercase, etc
 * rename ColoredConsole to LoggerProvider, and implement (copy from ED initially)
 * formats to match existing, e.g. values for Systemd, ScopeLine (with newline at end), MessageLine, ExceptionLine
-* Batching for Elasticsearch provider
 * Add activity tags / baggage for ES.
 * Map ASP.NET path, etc to ECS fields
 * Other providers -- database, 
